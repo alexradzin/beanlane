@@ -4,11 +4,14 @@ import net.sf.cglib.proxy.Callback;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
 import org.beanlane.NameExtractor.BeanNameExtractor;
-import sun.reflect.ReflectionFactory;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -24,7 +27,7 @@ public class BeanLane {
         put(float.class, Optional.of(0.0F));
         put(double.class, Optional.of(0.0));
         put(boolean.class, Optional.of(false));
-        put(String.class, Optional.ofNullable(null));
+        put(String.class, Optional.empty());
     }};
 
     private final ThreadLocal<String> nameHolder = new ThreadLocal<>();
@@ -62,15 +65,27 @@ public class BeanLane {
         enhancer.setCallbackType(interceptor.getClass());
         final Class<?> proxyClass = enhancer.createClass();
         Enhancer.registerCallbacks(proxyClass, new Callback[] {interceptor});
-        try {
-            @SuppressWarnings("unchecked")
-            T result = (T)ReflectionFactory.getReflectionFactory().newConstructorForSerialization(proxyClass, Object.class.getDeclaredConstructor()).newInstance();
-            return result;
-        } catch (ReflectiveOperationException e) {
-            throw new IllegalStateException(e);
-        }
+
+        @SuppressWarnings("unchecked")
+        T result = (T)Arrays.stream(proxyClass.getDeclaredConstructors()).sorted(new Comparator<Constructor<?>>() {
+            @Override
+            public int compare(Constructor<?> c1, Constructor<?> c2) {
+                return c1.getParameterCount() - c2.getParameterCount();
+            }
+        }).map(this::newInstance).filter(Objects::nonNull).findFirst().orElseThrow(() -> new NoSuchMethodError("Cannot find constructor to create instance of " + clazz.getName()));
+        return result;
     }
 
+    private <T> T newInstance(Constructor<T> constructor) {
+        constructor.setAccessible(true);
+        try {
+            return constructor
+                    .newInstance(Arrays.stream(constructor.getParameterTypes()).map(p -> defaultValue.getOrDefault(p, Optional.empty()))
+                    .map(p -> p.orElse(null)).toArray());
+        } catch (ReflectiveOperationException e) {
+            return null;
+        }
+    }
 
     public <T> String name(Supplier<T> f) {
         try {
