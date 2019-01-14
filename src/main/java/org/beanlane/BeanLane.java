@@ -53,7 +53,6 @@ public class BeanLane {
         nameHolder.remove();
     }
 
-    @SuppressWarnings("restriction")
     public <T> T of(Class<T> clazz) {
         Enhancer enhancer = new Enhancer();
         enhancer.setSuperclass(clazz);
