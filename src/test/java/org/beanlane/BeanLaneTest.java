@@ -24,4 +24,13 @@ class BeanLaneTest {
         assertEquals("last_name", lane.name(p::getLastName));
         assertEquals("home.city", lane.name(() -> p.getHome().getCity()));
     }
+
+    @Test
+    void snakeUpperCaseNames() {
+        BeanLane lane = new BeanLane(new SnakeNameExtractor(true));
+        Person p = lane.of(Person.class);
+        assertEquals("FIRST_NAME", lane.name(p::getFirstName));
+        assertEquals("LAST_NAME", lane.name(p::getLastName));
+        assertEquals("HOME.CITY", lane.name(() -> p.getHome().getCity()));
+    }
 }

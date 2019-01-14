@@ -14,6 +14,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class BeanLane {
+    private static final String DEFAULT_SEPARATOR = ".";
     private final Map<Class, Optional<Object>> defaultValue = new HashMap<Class, Optional<Object>>() {{
         put(byte.class, Optional.of(0));
         put(short.class, Optional.of(0));
@@ -27,13 +28,24 @@ public class BeanLane {
     }};
 
     private final ThreadLocal<String> nameHolder = new ThreadLocal<>();
+    private final String separator;
     private final Function<Method, String> fieldNameExtractor;
 
+
     public BeanLane() {
-        this(new BeanNameExtractor());
+        this(DEFAULT_SEPARATOR, new BeanNameExtractor());
+    }
+
+    public BeanLane(String separator) {
+        this(separator, new BeanNameExtractor());
     }
 
     public BeanLane(Function<Method, String> fieldNameExtractor) {
+        this(DEFAULT_SEPARATOR, fieldNameExtractor);
+    }
+
+    public BeanLane(String separator, Function<Method, String> fieldNameExtractor) {
+        this.separator = separator;
         this.fieldNameExtractor = fieldNameExtractor;
         nameHolder.remove();
     }
@@ -44,7 +56,7 @@ public class BeanLane {
         enhancer.setSuperclass(clazz);
         enhancer.setUseCache(false);
         MethodInterceptor interceptor = (obj, method, args, proxy) -> {
-            nameHolder.set(nameHolder.get() == null ? fieldNameExtractor.apply(method) : String.join(".", nameHolder.get(), fieldNameExtractor.apply(method)));
+            nameHolder.set(nameHolder.get() == null ? fieldNameExtractor.apply(method) : String.join(separator, nameHolder.get(), fieldNameExtractor.apply(method)));
             return defaultValue.computeIfAbsent(method.getReturnType(), aClass -> Optional.of(of(method.getReturnType()))).orElse(null); // orElse(null) - is it OK or should throw excption?
         };
         enhancer.setCallbackType(interceptor.getClass());
