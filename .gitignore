@@ -23,6 +23,7 @@ hs_err_pid*
 
 *.iml
 .idea
+out
 
 */build/*
 */target/*
@@ -32,3 +33,4 @@ hs_err_pid*
 build/*
 target/*
 classes/*
+out/*
