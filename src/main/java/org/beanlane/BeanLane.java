@@ -66,12 +66,11 @@ public class BeanLane {
         Enhancer.registerCallbacks(proxyClass, new Callback[] {interceptor});
 
         @SuppressWarnings("unchecked")
-        T result = (T)Arrays.stream(proxyClass.getDeclaredConstructors()).sorted(new Comparator<Constructor<?>>() {
-            @Override
-            public int compare(Constructor<?> c1, Constructor<?> c2) {
-                return c1.getParameterCount() - c2.getParameterCount();
-            }
-        }).map(this::newInstance).filter(Objects::nonNull).findFirst().orElseThrow(() -> new NoSuchMethodError("Cannot find constructor to create instance of " + clazz.getName()));
+        T result = (T)Arrays.stream(proxyClass.getDeclaredConstructors()).sorted(Comparator.comparingInt(Constructor::getParameterCount))
+                .map(this::newInstance)
+                .filter(Objects::nonNull)
+                .findFirst()
+                .orElseThrow(() -> new NoSuchMethodError("Cannot find constructor to create instance of " + clazz.getName()));
         return result;
     }
 
