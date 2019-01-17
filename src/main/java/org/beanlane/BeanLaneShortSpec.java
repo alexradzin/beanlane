@@ -4,7 +4,7 @@ import org.beanlane.NameExtractor.BeanNameExtractor;
 
 import java.util.function.Supplier;
 
-public interface BeanLaneSpec {
+public interface BeanLaneShortSpec {
     BeanLane bean = new BeanLane(new BeanNameExtractor());
     BeanLane snake = new BeanLane(new NameExtractor.SnakeNameExtractor());
     BeanLane upperSnake = new BeanLane(new NameExtractor.SnakeNameExtractor(true));

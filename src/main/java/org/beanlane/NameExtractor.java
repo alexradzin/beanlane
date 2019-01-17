@@ -1,8 +1,11 @@
 package org.beanlane;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.function.Function;
+
+import static java.lang.String.format;
 
 @SuppressWarnings("WeakerAccess")
 public class NameExtractor {
@@ -10,7 +13,7 @@ public class NameExtractor {
         String getter = method.getName();
         String name = getter.startsWith("get") ? getter.substring(3) : getter.startsWith("is") ? getter.substring(2) : null;
         if (name == null) {
-            throw new IllegalArgumentException(String.format("Invoked method %s must be a getter", getter));
+            throw new IllegalArgumentException(format("Invoked method %s must be a getter", getter));
         }
         return name;
     }
@@ -53,6 +56,41 @@ public class NameExtractor {
                 name = name.toUpperCase();
             }
             return name;
+        }
+    }
+
+    static class BeanNameAnnotationExtractor implements Function<Method, String> {
+        private final Class<? extends Annotation> annotationClass;
+        private final String field;
+
+        public BeanNameAnnotationExtractor(Class<? extends Annotation> annotationClass, String field) {
+            this.annotationClass = annotationClass;
+            this.field = field;
+        }
+
+        @Override
+        public String apply(Method method) {
+            Annotation annotation = method.getAnnotation(annotationClass);
+            String fieldName = new BeanNameExtractor().apply(method);
+            if (annotation == null) {
+                try {
+                    annotation = method.getDeclaringClass().getDeclaredField(fieldName).getAnnotation(annotationClass);
+                } catch (NoSuchFieldException e) {
+                    // Nothing to do. Field is not found, the exception will be thrown in the next line.
+                }
+            }
+
+            if (annotation == null) {
+                throw new IllegalArgumentException(format(
+                        "Either getter %s or corresponding field %s are not marked with annotation %s",
+                        method.getName(), fieldName, annotationClass.getName()));
+            }
+
+            try {
+                return (String)annotationClass.getMethod(field).invoke(annotation);
+            } catch (ReflectiveOperationException e) {
+                throw new IllegalArgumentException(String.format("Cannot extract name value from %s.%s", annotationClass, field), e);
+            }
         }
     }
 }

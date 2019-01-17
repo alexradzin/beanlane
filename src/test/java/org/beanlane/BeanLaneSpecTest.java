@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class BeanLaneSpecTest implements BeanLaneSpec {
+class BeanLaneSpecTest implements BeanLaneShortSpec {
     @Test
     void beanPropertyName() {
         Person p = $(Person.class);

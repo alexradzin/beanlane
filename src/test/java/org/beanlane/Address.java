@@ -1,10 +1,17 @@
 package org.beanlane;
 
+import javax.xml.bind.annotation.XmlElement;
+
 public class Address {
+    @XmlElement(name = "ZIP")
     private int zip;
+    @XmlElement(name = "Country")
     private String country;
+    @XmlElement(name = "City")
     private String city;
+    @XmlElement(name = "Street")
     private String street;
+    @XmlElement(name = "StreetNumber")
     private String streetNumber;
 
     public Address(int zip, String country, String city, String street, String streetNumber) {
