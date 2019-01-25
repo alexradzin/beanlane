@@ -8,7 +8,7 @@ A simple utility that allows getting the name of bean properties as string witho
 There are a lot of libraries that operate with string representation of bean properties usually when building the
 query criteria. For example Hibernate, JPA, MongoDB client etc. The following example shows query of Mongo DB:
 
-```
+```java
 // connection
 Datastore datastore = new Morphia().createDatastore(new MongoClient(), "people");
 // query
@@ -28,7 +28,7 @@ wrong results whithout any failures.
 Libraries like jOOQ and QueryDSL solve this problems using code generation. BeanLane suggests solution without any code generation,
 so you can continue using your favorite criteria API in slightly safer manner.
 
-```
+```java
 // query
 Query<Person> query = datastore.createQuery(Person.class);
 Person p = $(Person.class);
@@ -46,13 +46,13 @@ As we can see in this example "magic" function call `$(p::getFirstName)` returns
 
 The library is still not published in maven repository but this will be done soon. Onece this is done just include its artifact into your dependency management script, e.g.
 
-```
+```java
 compile 'com.github:org.beanlane:1.0.0'
 ```
 
 The simplest way to use the library is to make your DAO layer class to implement `BeanLaneSpec`, i.e.
 
-```
+```java
 public class MyDao implements BeanLaneSpec {
 }
 ```
@@ -87,7 +87,7 @@ Sometimes we want to get name of field from annotation exactly as verious O[R]M 
 annotation that can be used to configure the library to use other annotation. Just make your DAO to implmenent `BeanLaneAnnotationSpec`
 and mark it with annotation `@BeanNameAnnotation`:
 
-```
+```java
 @BeanNameAnnotation(value = XmlElement.class, field = "name")
 public class MyXmlDao implements BeanNameAnnotation {
 }
