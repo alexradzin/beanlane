@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @BeanNameAnnotation(value = XmlElement.class, field = "name")
 class BeanLaneAnnotationTest implements BeanLaneAnnotationSpec {
     @Test
-    void beanPropertyName() {
+    void beanPropertyShortName() {
         Person p = $(Person.class);
         assertEquals("FirstName", $(p::getFirstName));
         assertEquals("LastName", $(p::getLastName));
@@ -20,5 +20,19 @@ class BeanLaneAnnotationTest implements BeanLaneAnnotationSpec {
         assertEquals("HomeAddress.Country", $(() -> p.getHome().getCountry()));
         assertEquals("HomeAddress.Street", $(() -> p.getHome().getStreet()));
         assertEquals("HomeAddress.StreetNumber", $(() -> p.getHome().getStreetNumber()));
+    }
+
+
+    @Test
+    void beanPropertyName() {
+        Person p = wrap(Person.class);
+        assertEquals("FirstName", name(p::getFirstName));
+        assertEquals("LastName", name(p::getLastName));
+        assertEquals("HomeAddress", name(p::getHome));
+        assertEquals("HomeAddress.ZIP", name(() -> p.getHome().getZip()));
+        assertEquals("HomeAddress.City", name(() -> p.getHome().getCity()));
+        assertEquals("HomeAddress.Country", name(() -> p.getHome().getCountry()));
+        assertEquals("HomeAddress.Street", name(() -> p.getHome().getStreet()));
+        assertEquals("HomeAddress.StreetNumber", name(() -> p.getHome().getStreetNumber()));
     }
 }

@@ -17,13 +17,16 @@ public interface BeanLaneShortSpec {
         return bean.name(f);
     }
 
+
     default <T> T __(Class<T> clazz) {
         return snake.of(clazz);
     }
 
+
     default <T> String __(Supplier<T> f)  {
         return snake.name(f);
     }
+
 
     default <T> T ___(Class<T> clazz) {
         return upperSnake.of(clazz);
