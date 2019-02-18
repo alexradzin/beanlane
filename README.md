@@ -76,7 +76,7 @@ Class `BeanLane` has several configuration parameters they can be used if you in
 
 ## Why names of magic functions do not follow naming conventions?
 
-Well, I could give the methods more conventional names but this will kill the idea because the code will be too long.
+Well, each function with short name has synonym with conventional name. However, IMHO short names just improve readability.
 The statement `$(p::getFirstName)` just a little bit longer than `"firstName"`, however `getName(p::getFirstName)`
 is significantly longer and not clearer.
 
@@ -89,10 +89,38 @@ and mark it with annotation `@BeanNameAnnotation`:
 
 ```java
 @BeanNameAnnotation(value = XmlElement.class, field = "name")
-public class MyXmlDao implements BeanNameAnnotation {
+public class MyXmlDao implements BeanNameAnnotationSpec {
 }
 
 @BeanNameAnnotation(value = JsonProperty.class)
-public class MyJsonDao implements BeanNameAnnotation {
+public class MyJsonDao implements BeanNameAnnotationSpec {
 }
 ```
+
+`BeanNameAnnotationSpec` uses strings extracted from annotations instead of from class fields. For example if classPerson` is defined as following:
+
+```
+public class Person {
+    @XmlElement(name = "FirstName") private String firstName;
+    @XmlElement(name = "LastName") private String lastName;
+    @XmlElement(name = "HomeAddress") private Address home;
+    //..........
+}
+```
+
+We can use it as following:
+
+```
+@BeanNameAnnotation(value = XmlElement.class, field = "name")
+class PersonDao implements BeanLaneAnnotationSpec {
+    public void foo() {
+        Person p = $(Person.class);
+        $(p::getFirstName);                     // returns FirstName
+        $(() -> p.getHome().getStreetNumber()); // returns omeAddress.StreetNumber
+    }
+}
+```
+
+
+
+
