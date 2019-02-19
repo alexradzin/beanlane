@@ -1,4 +1,4 @@
-# BeanLane
+# BeanLane [![CircleCI](https://circleci.com/gh/alexradzin/beanlane/tree/master.svg?style=svg)](https://circleci.com/gh/alexradzin/beanlane/tree/master)
 
 A simple utility that allows getting the name of bean properties as string without reflection.
 
