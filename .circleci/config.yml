@@ -4,6 +4,9 @@ jobs:
 
     working_directory: ~/circleci-beanlane
 
+    docker:
+      - image: circleci/openjdk:8-stretch-node-browsers-legacy
+
     steps:
 
       - checkout
