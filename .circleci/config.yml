@@ -1,0 +1,17 @@
+version: 2
+jobs:
+  build:
+
+    working_directory: ~/circleci-beanlane
+
+    steps:
+
+      - checkout
+
+      - run: ./gradlew build
+
+      - store_test_results:
+          path: target/surefire-reports
+
+      - store_artifacts:
+          path: target/beanlane-1.0-SNAPSHOT.jar
