@@ -14,7 +14,8 @@ jobs:
       - run: ./gradlew build
 
       - store_test_results:
-          path: target/surefire-reports
+          path: build/test-results/test
 
       - store_artifacts:
-          path: target/beanlane-1.0-SNAPSHOT.jar
+          path: build/libs/beanlane-1.0-SNAPSHOT.jar
+          
