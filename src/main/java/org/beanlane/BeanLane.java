@@ -18,17 +18,7 @@ import java.util.function.Supplier;
 
 public class BeanLane {
     private static final String DEFAULT_SEPARATOR = ".";
-    private final Map<Class, Optional<Object>> defaultValue = new HashMap<Class, Optional<Object>>() {{
-        put(byte.class, Optional.of(0));
-        put(short.class, Optional.of(0));
-        put(int.class, Optional.of(0));
-        put(long.class, Optional.of(0));
-        put(char.class, Optional.of(0));
-        put(float.class, Optional.of(0.0F));
-        put(double.class, Optional.of(0.0));
-        put(boolean.class, Optional.of(false));
-        put(String.class, Optional.empty());
-    }};
+    private final Map<Class, Optional<Object>> defaultValue = new HashMap<>();
 
     private final ThreadLocal<String> nameHolder = new ThreadLocal<>();
     private final String separator;
@@ -51,6 +41,16 @@ public class BeanLane {
         this.separator = separator;
         this.fieldNameExtractor = fieldNameExtractor;
         nameHolder.remove();
+
+        defaultValue.put(byte.class, Optional.of(0));
+        defaultValue.put(short.class, Optional.of(0));
+        defaultValue.put(int.class, Optional.of(0));
+        defaultValue.put(long.class, Optional.of(0));
+        defaultValue.put(char.class, Optional.of(0));
+        defaultValue.put(float.class, Optional.of(0.0F));
+        defaultValue.put(double.class, Optional.of(0.0));
+        defaultValue.put(boolean.class, Optional.of(false));
+        defaultValue.put(String.class, Optional.empty());
     }
 
     public <T> T of(Class<T> clazz) {
