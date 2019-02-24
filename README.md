@@ -2,7 +2,6 @@
 
 A simple utility that allows getting the name of bean properties as string without reflection.
 
-
 ## Motivation
 
 There are a lot of libraries that operate with string representation of bean properties usually when building the
@@ -41,7 +40,6 @@ query.order(Sort.descending("lastName")).asList(new FindOptions().skip(limit * p
 
 As we can see in this example "magic" function call `$(p::getFirstName)` returns string `firstName`, `$(p::getAge)` returns `lastName` etc. 
 
-
 ## Quick start
 
 The library is still not published in maven repository but this will be done soon. Onece this is done just include its artifact into your dependency management script, e.g.
@@ -58,13 +56,11 @@ public class MyDao implements BeanLaneSpec {
 ```
 
 Once this is done 3 magic functions become available:
-*  `$()` that generates bean property names (e.g. `lastName`, `age`, `home.street`)
-* `__()` that generates snake lower case names (e.g. `last_name`)
-* `___()` that generates snake upper case names (e.g. `LAST_NAME`)
+  * `$()` that generates bean property names (e.g. `lastName`, `age`, `home.street`)
+  * `__()` that generates snake lower case names (e.g. `last_name`)
+  * `___()` that generates snake upper case names (e.g. `LAST_NAME`)
 
-
-
-## How does it work?
+## How does it work
 
 The interface `BeanLaneSpec` provides several sort named default functions that delegate implementation into to
 class `BeanLane`. `BeanLane` uses CGLIB to generate proxy over provided class (`Person` in our example), so the names of called 
@@ -73,17 +69,15 @@ methods become avaliable and can be returned to application level code.
 Class `BeanLane` has several configuration parameters they can be used if you instantiate it directly without interface
 `BeanLaneSpec`. This also allows you to change names of magic function according to your taste.
 
-
-## Why names of magic functions do not follow naming conventions?
+## Why names of magic functions do not follow naming conventions
 
 Well, each function with short name has synonym with conventional name. However, IMHO short names just improve readability.
 The statement `$(p::getFirstName)` just a little bit longer than `"firstName"`, however `getName(p::getFirstName)`
 is significantly longer and not clearer.
 
-
 ## Extracting field names from annotations
 
-Sometimes we want to get name of field from annotation exactly as verious O[R]M frameworks do. BeanLane has generic container
+Sometimes we want to get name of field from annotation exactly as verious ORM/OM frameworks do. BeanLane has generic container
 annotation that can be used to configure the library to use other annotation. Just make your DAO to implmenent `BeanLaneAnnotationSpec`
 and mark it with annotation `@BeanNameAnnotation`:
 
@@ -99,7 +93,7 @@ public class MyJsonDao implements BeanNameAnnotationSpec {
 
 `BeanNameAnnotationSpec` uses strings extracted from annotations instead of from class fields. For example if classPerson` is defined as following:
 
-```
+```java
 public class Person {
     @XmlElement(name = "FirstName") private String firstName;
     @XmlElement(name = "LastName") private String lastName;
@@ -110,7 +104,7 @@ public class Person {
 
 We can use it as following:
 
-```
+```java
 @BeanNameAnnotation(value = XmlElement.class, field = "name")
 class PersonDao implements BeanLaneAnnotationSpec {
     public void foo() {
@@ -120,7 +114,3 @@ class PersonDao implements BeanLaneAnnotationSpec {
     }
 }
 ```
-
-
-
-

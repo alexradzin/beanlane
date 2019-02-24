@@ -9,7 +9,7 @@ import static java.lang.String.format;
 
 @SuppressWarnings("WeakerAccess")
 public class NameExtractor {
-    static String stripGetterPrefix(Method method) {
+    private static String stripGetterPrefix(Method method) {
         String getter = method.getName();
         String name = getter.startsWith("get") ? getter.substring(3) : getter.startsWith("is") ? getter.substring(2) : null;
         if (name == null) {
