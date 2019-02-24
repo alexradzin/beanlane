@@ -56,9 +56,9 @@ public class MyDao implements BeanLaneSpec {
 ```
 
 Once this is done 3 magic functions become available:
-* `$()` that generates bean property names (e.g. `lastName`, `age`, `home.street`)
-* `__()` that generates snake lower case names (e.g. `last_name`)
-* `___()` that generates snake upper case names (e.g. `LAST_NAME`)
+*   `$()` that generates bean property names (e.g. `lastName`, `age`, `home.street`)
+*   `__()` that generates snake lower case names (e.g. `last_name`)
+*   `___()` that generates snake upper case names (e.g. `LAST_NAME`)
 
 ## How does it work
 
