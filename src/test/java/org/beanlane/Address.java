@@ -41,4 +41,12 @@ public class Address {
     public String getStreetNumber() {
         return streetNumber;
     }
+
+    public String zipCode() {
+        return "" + zip;
+    }
+
+    public String getZipCode() {
+        return "" + zip;
+    }
 }

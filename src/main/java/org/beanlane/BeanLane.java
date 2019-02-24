@@ -36,7 +36,7 @@ public class BeanLane {
 
 
     public BeanLane() {
-        this(DEFAULT_SEPARATOR, new BeanNameExtractor());
+        this(DEFAULT_SEPARATOR);
     }
 
     public BeanLane(String separator) {

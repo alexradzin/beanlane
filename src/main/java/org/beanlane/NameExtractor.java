@@ -33,7 +33,7 @@ public class NameExtractor {
         private final boolean upperCase;
 
         public SnakeNameExtractor() {
-            this(DEFAULT_SEPARATOR, false);
+            this(DEFAULT_SEPARATOR);
         }
 
         public SnakeNameExtractor(String separator) {
@@ -89,7 +89,7 @@ public class NameExtractor {
             try {
                 return (String)annotationClass.getMethod(field).invoke(annotation);
             } catch (ReflectiveOperationException e) {
-                throw new IllegalArgumentException(String.format("Cannot extract name value from %s.%s", annotationClass, field), e);
+                throw new IllegalArgumentException("Cannot extract name value from " + annotationClass + "." + field, e);
             }
         }
     }

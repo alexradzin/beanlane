@@ -3,6 +3,7 @@ package org.beanlane;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class BeanLaneSpecTest implements BeanLaneShortSpec {
     @Test
@@ -43,5 +44,16 @@ class BeanLaneSpecTest implements BeanLaneShortSpec {
         assertEquals("HOME.COUNTRY", ___(() -> p.getHome().getCountry()));
         assertEquals("HOME.STREET", ___(() -> p.getHome().getStreet()));
         assertEquals("HOME.STREET_NUMBER", ___(() -> p.getHome().getStreetNumber()));
+    }
+
+    @Test
+    void notGetter() {
+        Address a = $(Address.class);
+        assertThrows(IllegalArgumentException.class, a::zipCode);
+    }
+
+    @Test
+    void constructorThrowsException() {
+        assertThrows(NoSuchMethodError.class, () -> $(Word.class));
     }
 }

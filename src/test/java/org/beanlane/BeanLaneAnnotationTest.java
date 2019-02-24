@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import javax.xml.bind.annotation.XmlElement;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @BeanNameAnnotation(value = XmlElement.class, field = "name")
 class BeanLaneAnnotationTest implements BeanLaneAnnotationSpec {
@@ -35,4 +36,11 @@ class BeanLaneAnnotationTest implements BeanLaneAnnotationSpec {
         assertEquals("HomeAddress.Street", name(() -> p.getHome().getStreet()));
         assertEquals("HomeAddress.StreetNumber", name(() -> p.getHome().getStreetNumber()));
     }
+
+    @Test
+    void notField() {
+        Address a = $(Address.class);
+        assertThrows(IllegalArgumentException.class, a::getZipCode);
+    }
+
 }

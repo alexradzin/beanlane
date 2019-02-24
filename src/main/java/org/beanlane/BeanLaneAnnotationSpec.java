@@ -7,7 +7,7 @@ import java.util.function.Supplier;
 import static java.lang.String.format;
 
 public interface BeanLaneAnnotationSpec {
-    Map<String, BeanLane> br = new ConcurrentHashMap<>(1);
+    Map<Class, BeanLane> br = new ConcurrentHashMap<>(1);
 
     default <T> T wrap(Class<T> clazz) {
         return $(clazz);
@@ -18,7 +18,7 @@ public interface BeanLaneAnnotationSpec {
         if (annotation == null) {
             throw new IllegalArgumentException(format("Class %s is not marked with annotation %s", getClass().getName(), BeanNameAnnotation.class.getName()));
         }
-        return br.computeIfAbsent("", s -> new BeanLane(new NameExtractor.BeanNameAnnotationExtractor(annotation.value(), annotation.field()))).of(clazz);
+        return br.computeIfAbsent(getClass(), s -> new BeanLane(new NameExtractor.BeanNameAnnotationExtractor(annotation.value(), annotation.field()))).of(clazz);
     }
 
     default <T> String name(Supplier<T> f)  {
@@ -26,6 +26,6 @@ public interface BeanLaneAnnotationSpec {
     }
 
     default <T> String $(Supplier<T> f)  {
-        return br.get("").name(f);
+        return br.get(getClass()).name(f);
     }
 }
