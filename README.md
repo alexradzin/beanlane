@@ -1,6 +1,6 @@
 # BeanLane 
 [![CircleCI](https://circleci.com/gh/alexradzin/beanlane/tree/master.svg?style=svg)](https://circleci.com/gh/alexradzin/beanlane/tree/master)
-[![Build Status](https://travis-ci.com/alexradzin/beanlane.svg?branch=master)](https://travis-ci.com/alexradzin/beanlane)
+[![Build Status](https://travis-ci.org/alexradzin/beanlane.svg?branch=master)](https://travis-ci.org/alexradzin/beanlane)
 [![codecov](https://codecov.io/gh/alexradzin/beanlane/branch/master/graph/badge.svg)](https://codecov.io/gh/alexradzin/beanlane)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/6a26c7c5106c4831a5ca6d74e9eda49d)](https://www.codacy.com/app/alexradzin/beanlane?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=alexradzin/beanlane&amp;utm_campaign=Badge_Grade)
 
