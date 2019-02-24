@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-class BeanLaneSpecTest implements BeanLaneShortSpec {
+class BeanLaneShortSpecTest implements BeanLaneShortSpec {
     @Test
     void beanPropertyName() {
         Person p = $(Person.class);
@@ -20,18 +20,6 @@ class BeanLaneSpecTest implements BeanLaneShortSpec {
     }
 
 
-    @Test
-    void snakePropertyName() {
-        Person p = __(Person.class);
-        assertEquals("first_name", __(p::getFirstName));
-        assertEquals("last_name", __(p::getLastName));
-        assertEquals("home", __(p::getHome));
-        assertEquals("home.zip", __(() -> p.getHome().getZip()));
-        assertEquals("home.city", __(() -> p.getHome().getCity()));
-        assertEquals("home.country", __(() -> p.getHome().getCountry()));
-        assertEquals("home.street", __(() -> p.getHome().getStreet()));
-        assertEquals("home.street_number", __(() -> p.getHome().getStreetNumber()));
-    }
 
     @Test
     void upperCaseSnakePropertyName() {
