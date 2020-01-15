@@ -115,7 +115,7 @@ class PersonDao implements BeanLaneAnnotationSpec {
     public void foo() {
         Person p = $(Person.class);
         $(p::getFirstName);                     // returns FirstName
-        $(() -> p.getHome().getStreetNumber()); // returns omeAddress.StreetNumber
+        $(() -> p.getHome().getStreetNumber()); // returns HomeAddress.StreetNumber
     }
 }
 ```
