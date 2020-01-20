@@ -23,7 +23,7 @@ repositories {
 }
 
 dependencies {
-    compile group: 'cglib', name: 'cglib', version: '3.2.10'
+    compile group: 'cglib', name: 'cglib', version: '3.3.0'
 
     testCompileOnly(
             'junit:junit:4.12'
