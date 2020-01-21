@@ -1,6 +1,7 @@
 package org.beanlane;
 
-import org.beanlane.NameExtractor.SnakeNameExtractor;
+import org.beanlane.NameExtractor.BeanNameExtractor;
+import org.beanlane.NameExtractor.ToSnakeCaseFormatter;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -18,7 +19,7 @@ class BeanLaneTest {
 
     @Test
     void snakeNames() {
-        BeanLane lane = new BeanLane(new SnakeNameExtractor());
+        BeanLane lane = new BeanLane(new BeanNameExtractor(new ToSnakeCaseFormatter()));
         Person p = lane.of(Person.class);
         assertEquals("first_name", lane.name(p::getFirstName));
         assertEquals("last_name", lane.name(p::getLastName));
@@ -27,7 +28,7 @@ class BeanLaneTest {
 
     @Test
     void snakeUpperCaseNames() {
-        BeanLane lane = new BeanLane(new SnakeNameExtractor(true));
+        BeanLane lane = new BeanLane(new BeanNameExtractor(new ToSnakeCaseFormatter(true)));
         Person p = lane.of(Person.class);
         assertEquals("FIRST_NAME", lane.name(p::getFirstName));
         assertEquals("LAST_NAME", lane.name(p::getLastName));

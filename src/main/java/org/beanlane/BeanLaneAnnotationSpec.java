@@ -1,5 +1,7 @@
 package org.beanlane;
 
+import org.beanlane.NameExtractor.BeanNameAnnotationExtractor;
+
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
@@ -18,7 +20,9 @@ public interface BeanLaneAnnotationSpec {
         if (annotation == null) {
             throw new IllegalArgumentException(format("Class %s is not marked with annotation %s", getClass().getName(), BeanNameAnnotation.class.getName()));
         }
-        return br.computeIfAbsent(getClass(), s -> new BeanLane(new NameExtractor.BeanNameAnnotationExtractor(annotation.value(), annotation.field()))).of(clazz);
+        return br.computeIfAbsent(
+                getClass(),
+                s -> new BeanLane(new BeanNameAnnotationExtractor(annotation.value(), annotation.field(), NameExtractor.create(annotation.formatter())))).of(clazz);
     }
 
     default <T> String name(Supplier<T> f)  {

@@ -3,7 +3,7 @@ package org.beanlane;
 import java.util.function.Supplier;
 
 public interface BeanLaneLowerSnakeSpec {
-    BeanLane snake = new BeanLane(new NameExtractor.SnakeNameExtractor());
+    BeanLane snake = new BeanLane(new NameExtractor.BeanNameExtractor(new NameExtractor.ToSnakeCaseFormatter(false)));
 
 
     default <T> T wrap(Class<T> clazz) {

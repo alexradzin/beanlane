@@ -6,8 +6,8 @@ import java.util.function.Supplier;
 
 public interface BeanLaneShortSpec {
     BeanLane bean = new BeanLane(new BeanNameExtractor());
-    BeanLane snake = new BeanLane(new NameExtractor.SnakeNameExtractor());
-    BeanLane upperSnake = new BeanLane(new NameExtractor.SnakeNameExtractor(true));
+    BeanLane snake = new BeanLane(new BeanNameExtractor(new NameExtractor.ToSnakeCaseFormatter()));
+    BeanLane upperSnake = new BeanLane(new BeanNameExtractor(new NameExtractor.ToSnakeCaseFormatter(true)));
 
     default <T> T $(Class<T> clazz) {
         return bean.of(clazz);
