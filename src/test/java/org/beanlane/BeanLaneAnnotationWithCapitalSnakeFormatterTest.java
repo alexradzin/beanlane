@@ -11,6 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @BeanNameAnnotation(value = XmlElement.class, field = "name", formatter = ToCapitalSnakeCaseFormatter.class)
+@VisibleForPackage
 class BeanLaneAnnotationWithCapitalSnakeFormatterTest implements BeanLaneAnnotationSpec {
     @Test
     void beanPropertyShortName() {

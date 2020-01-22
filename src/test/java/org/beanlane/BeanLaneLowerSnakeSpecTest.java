@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@VisibleForPackage
 class BeanLaneLowerSnakeSpecTest implements BeanLaneLowerSnakeSpec {
     @Test
     void beanPropertyName() {

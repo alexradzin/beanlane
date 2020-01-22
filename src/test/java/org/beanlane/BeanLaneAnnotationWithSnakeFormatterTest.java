@@ -6,8 +6,6 @@ import org.junit.jupiter.api.Test;
 
 import javax.xml.bind.annotation.XmlElement;
 
-import java.util.Arrays;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -45,11 +43,4 @@ class BeanLaneAnnotationWithSnakeFormatterTest implements BeanLaneAnnotationSpec
         Address a = $(Address.class);
         assertThrows(IllegalArgumentException.class, a::getZipCode);
     }
-
-    @Test
-    void re() {
-        System.out.println(Arrays.toString("homePage".split("(?=[A-Z][a-z])")));
-        System.out.println(Arrays.toString("ZIP".split("(?=[A-Z][a-z])")));
-    }
-
 }

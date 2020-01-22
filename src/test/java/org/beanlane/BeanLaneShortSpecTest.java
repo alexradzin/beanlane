@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+@VisibleForPackage
 class BeanLaneShortSpecTest implements BeanLaneShortSpec {
     @Test
     void beanPropertyName() {

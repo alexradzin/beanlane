@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @BeanNameAnnotation(value = XmlElement.class, field = "somethingWrong")
+@VisibleForPackage
 class BeanLaneWrongAnnotationTest implements BeanLaneAnnotationSpec {
     @Test
     void beanPropertyWrongName() {

@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 //@BeanNameAnnotation - this annotation is mandatory for classes that implement BeanLaneAnnotationSpec
+@VisibleForPackage
 class BeanLaneNoAnnotationTest implements BeanLaneAnnotationSpec {
     @Test
     void beanPropertyWrongName() {
