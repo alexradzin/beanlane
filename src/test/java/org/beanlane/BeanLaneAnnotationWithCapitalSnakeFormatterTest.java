@@ -1,16 +1,17 @@
 package org.beanlane;
 
 
-import org.beanlane.NameExtractor.ToCapitalSnakeCaseFormatter;
+import org.beanlane.formatter.CaseFormatter;
+import org.beanlane.formatter.ToCapitalSnakeCaseFormatter;
+import org.beanlane.formatter.ToSnakeCaseFormatter;
 import org.junit.jupiter.api.Test;
 
 import javax.xml.bind.annotation.XmlElement;
-import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@BeanNameAnnotation(value = XmlElement.class, field = "name", formatter = ToCapitalSnakeCaseFormatter.class)
+@BeanNameAnnotation(value = XmlElement.class, field = "name", formatter = {@BeanNameFormatter(ToSnakeCaseFormatter.class), @BeanNameFormatter(value = CaseFormatter.class, args = "UPPER")})
 @VisibleForPackage
 class BeanLaneAnnotationWithCapitalSnakeFormatterTest implements BeanLaneAnnotationSpec {
     @Test

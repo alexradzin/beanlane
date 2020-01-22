@@ -3,7 +3,7 @@ package org.beanlane;
 import net.sf.cglib.proxy.Callback;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
-import org.beanlane.NameExtractor.BeanNameExtractor;
+import org.beanlane.extractor.BeanNameExtractor;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;

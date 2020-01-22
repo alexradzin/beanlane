@@ -1,7 +1,7 @@
 package org.beanlane;
 
-import org.beanlane.NameExtractor.BeanNameExtractor;
-import org.beanlane.NameExtractor.ToSnakeCaseFormatter;
+import org.beanlane.extractor.BeanNameExtractor;
+import org.beanlane.formatter.ToSnakeCaseFormatter;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.Assert.assertEquals;

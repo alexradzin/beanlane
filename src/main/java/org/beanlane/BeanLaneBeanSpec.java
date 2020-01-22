@@ -1,6 +1,6 @@
 package org.beanlane;
 
-import org.beanlane.NameExtractor.BeanNameExtractor;
+import org.beanlane.extractor.BeanNameExtractor;
 
 import java.util.function.Supplier;
 

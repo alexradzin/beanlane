@@ -1,9 +1,12 @@
 package org.beanlane;
 
+import org.beanlane.extractor.BeanNameExtractor;
+import org.beanlane.formatter.ToSnakeCaseFormatter;
+
 import java.util.function.Supplier;
 
 public interface BeanLaneLowerSnakeSpec {
-    BeanLane snake = new BeanLane(new NameExtractor.BeanNameExtractor(new NameExtractor.ToSnakeCaseFormatter(false)));
+    BeanLane snake = new BeanLane(new BeanNameExtractor(new ToSnakeCaseFormatter(false)));
 
 
     default <T> T wrap(Class<T> clazz) {

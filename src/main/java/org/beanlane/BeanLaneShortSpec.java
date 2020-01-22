@@ -1,13 +1,14 @@
 package org.beanlane;
 
-import org.beanlane.NameExtractor.BeanNameExtractor;
+import org.beanlane.extractor.BeanNameExtractor;
+import org.beanlane.formatter.ToSnakeCaseFormatter;
 
 import java.util.function.Supplier;
 
 public interface BeanLaneShortSpec {
     BeanLane bean = new BeanLane(new BeanNameExtractor());
-    BeanLane snake = new BeanLane(new BeanNameExtractor(new NameExtractor.ToSnakeCaseFormatter()));
-    BeanLane upperSnake = new BeanLane(new BeanNameExtractor(new NameExtractor.ToSnakeCaseFormatter(true)));
+    BeanLane snake = new BeanLane(new BeanNameExtractor(new ToSnakeCaseFormatter()));
+    BeanLane upperSnake = new BeanLane(new BeanNameExtractor(new ToSnakeCaseFormatter(true)));
 
     default <T> T $(Class<T> clazz) {
         return bean.of(clazz);

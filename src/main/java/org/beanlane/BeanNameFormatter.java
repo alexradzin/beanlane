@@ -15,18 +15,9 @@ import java.util.function.Function;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 @Documented
-public @interface BeanNameAnnotation {
-    /**
-     * The annotation that holds customized bean property
-     */
-    Class<? extends Annotation> value();
-
-    /**
-     * The name of annotation method that holds the property name.
-     */
-    String field() default "value";
-
-    BeanNameFormatter[] formatter() default @BeanNameFormatter;
+public @interface BeanNameFormatter {
+    Class<? extends Function<String, String>> value() default NoOp.class;
+    String[] args() default {};
 
 
     class NoOp implements Function<String, String> {
