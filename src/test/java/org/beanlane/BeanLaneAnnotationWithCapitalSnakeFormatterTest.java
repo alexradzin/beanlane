@@ -45,11 +45,4 @@ class BeanLaneAnnotationWithCapitalSnakeFormatterTest implements BeanLaneAnnotat
         Address a = $(Address.class);
         assertThrows(IllegalArgumentException.class, a::getZipCode);
     }
-
-    @Test
-    void re() {
-        System.out.println(Arrays.toString("homePage".split("(?=[A-Z][a-z])")));
-        System.out.println(Arrays.toString("ZIP".split("(?=[A-Z][a-z])")));
-    }
-
 }
