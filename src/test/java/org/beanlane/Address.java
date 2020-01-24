@@ -13,13 +13,15 @@ public class Address {
     private String street;
     @XmlElement(name = "StreetNumber")
     private String streetNumber;
+    private boolean capital;
 
-    public Address(int zip, String country, String city, String street, String streetNumber) {
+    public Address(int zip, String country, String city, String street, String streetNumber, boolean capital) {
         this.zip = zip;
         this.country = country;
         this.city = city;
         this.street = street;
         this.streetNumber = streetNumber;
+        this.capital = capital;
     }
 
     public int getZip() {
@@ -48,5 +50,9 @@ public class Address {
 
     public String getZipCode() {
         return "" + zip;
+    }
+
+    public boolean isCapital() {
+        return capital;
     }
 }

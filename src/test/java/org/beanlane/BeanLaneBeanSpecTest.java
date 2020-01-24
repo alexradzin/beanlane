@@ -17,6 +17,7 @@ class BeanLaneBeanSpecTest implements BeanLaneBeanSpec {
         assertEquals("home.country", $(() -> p.getHome().getCountry()));
         assertEquals("home.street", $(() -> p.getHome().getStreet()));
         assertEquals("home.streetNumber", $(() -> p.getHome().getStreetNumber()));
+        assertEquals("home.capital", $(() -> p.getHome().isCapital()));
     }
 
     @Test
