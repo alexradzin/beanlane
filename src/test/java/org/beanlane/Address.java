@@ -1,6 +1,7 @@
 package org.beanlane;
 
 import javax.xml.bind.annotation.XmlElement;
+import java.util.Map;
 
 public class Address extends PostalAddress {
     @XmlElement(name = "Country")
@@ -12,6 +13,7 @@ public class Address extends PostalAddress {
     @XmlElement(name = "StreetNumber")
     private String streetNumber;
     private boolean capital;
+    private Map.Entry<String, String> attribute;
 
     public Address(int zip, String country, String city, String street, String streetNumber, boolean capital) {
         super(zip);
@@ -41,5 +43,9 @@ public class Address extends PostalAddress {
 
     public boolean isCapital() {
         return capital;
+    }
+
+    public Map.Entry<String, String> getAttribute() {
+        return attribute;
     }
 }

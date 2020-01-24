@@ -63,7 +63,8 @@ public class BeanLane {
         enhancer.setUseCache(false);
         MethodInterceptor interceptor = (obj, method, args, proxy) -> {
             nameHolder.set(nameHolder.get() == null ? fieldNameExtractor.apply(method) : String.join(separator, nameHolder.get(), fieldNameExtractor.apply(method)));
-            return defaultValue.computeIfAbsent(method.getReturnType(), aClass -> Optional.of(of(method.getReturnType()))).orElse(null); // orElse(null) - is it OK or should throw exception?
+            Class rt = method.getReturnType();
+            return defaultValue.computeIfAbsent(rt, aClass -> Optional.of(of(rt))).orElse(null); // orElse(null) - is it OK or should throw exception?
         };
         enhancer.setCallbackType(interceptor.getClass());
         final Class<?> proxyClass = enhancer.createClass();
@@ -93,6 +94,13 @@ public class BeanLane {
         synchronized (lock) {
             try {
                 f.get();
+            } catch (ClassCastException e) {
+                // ignore it. This may happen in the end of chain when generics are used.
+                // Generics are not available at runtime and cannot be properly instrumented that cause ClassCastException.
+                // It is not interesting however because nameHolder alreaady holds correct path at the moment.
+            }
+
+            try {
                 return nameHolder.get();
             } finally {
                 nameHolder.remove();

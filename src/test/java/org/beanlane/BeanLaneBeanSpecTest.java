@@ -21,6 +21,7 @@ class BeanLaneBeanSpecTest implements BeanLaneBeanSpec {
         assertEquals("correspondence", $(p::getCorrespondence));
         assertEquals("correspondence.zip", $(() -> p.getCorrespondence().getZip()));
         assertEquals("spouse.firstName", $(() -> p.getSpouse().getFirstName()));
+        assertEquals("home.attribute.key", $(() -> p.getHome().getAttribute().getKey()));
     }
 
     @Test
