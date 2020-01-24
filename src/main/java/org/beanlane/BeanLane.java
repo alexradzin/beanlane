@@ -24,6 +24,7 @@ public class BeanLane {
     private final Map<Class, Optional<Object>> defaultValue = new HashMap<>();
 
     private final ThreadLocal<String> nameHolder = new ThreadLocal<>();
+    private final Object lock = new Object();
     private final String separator;
     private final Function<Method, String> fieldNameExtractor;
 
@@ -62,7 +63,7 @@ public class BeanLane {
         enhancer.setUseCache(false);
         MethodInterceptor interceptor = (obj, method, args, proxy) -> {
             nameHolder.set(nameHolder.get() == null ? fieldNameExtractor.apply(method) : String.join(separator, nameHolder.get(), fieldNameExtractor.apply(method)));
-            return defaultValue.computeIfAbsent(method.getReturnType(), aClass -> Optional.of(of(method.getReturnType()))).orElse(null); // orElse(null) - is it OK or should throw excption?
+            return defaultValue.computeIfAbsent(method.getReturnType(), aClass -> Optional.of(of(method.getReturnType()))).orElse(null); // orElse(null) - is it OK or should throw exception?
         };
         enhancer.setCallbackType(interceptor.getClass());
         final Class<?> proxyClass = enhancer.createClass();
@@ -89,11 +90,13 @@ public class BeanLane {
     }
 
     public <T> String name(Supplier<T> f) {
-        try {
-            f.get();
-            return nameHolder.get();
-        } finally {
-            nameHolder.remove();
+        synchronized (lock) {
+            try {
+                f.get();
+                return nameHolder.get();
+            } finally {
+                nameHolder.remove();
+            }
         }
     }
 

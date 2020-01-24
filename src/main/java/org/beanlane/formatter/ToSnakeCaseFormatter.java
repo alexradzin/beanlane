@@ -3,6 +3,8 @@ package org.beanlane.formatter;
 import java.util.Arrays;
 import java.util.function.Function;
 
+import static java.lang.String.format;
+
 public class ToSnakeCaseFormatter implements Function<String, String> {
     protected static final String DEFAULT_SEPARATOR = "_";
     private final String separator;
@@ -40,5 +42,10 @@ public class ToSnakeCaseFormatter implements Function<String, String> {
             name = name.toUpperCase();
         }
         return name;
+    }
+
+    @Override
+    public String toString() {
+        return format("%s@%d(%s, %s)", getClass(), System.identityHashCode(this), separator, upperCase);
     }
 }

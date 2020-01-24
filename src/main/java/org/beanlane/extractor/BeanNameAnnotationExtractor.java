@@ -45,4 +45,9 @@ public class BeanNameAnnotationExtractor implements Function<Method, String> {
             throw new IllegalArgumentException("Cannot extract name value from " + annotationClass + "." + field, e);
         }
     }
+
+    @Override
+    public String toString() {
+        return format("%s(%s, %s, %s)", getClass(), annotationClass, field, formatter);
+    }
 }

@@ -3,6 +3,8 @@ package org.beanlane;
 import java.util.Collection;
 import java.util.function.Function;
 
+import static java.lang.String.format;
+
 public class CompositeFunction<T> implements Function<T, T> {
     private final Collection<Function<T, T>> functions;
 
@@ -17,5 +19,10 @@ public class CompositeFunction<T> implements Function<T, T> {
             result = f.apply(result);
         }
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return format("%s:%s", getClass(), functions);
     }
 }
