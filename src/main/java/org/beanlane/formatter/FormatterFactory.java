@@ -4,14 +4,12 @@ import java.lang.reflect.Constructor;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
 import static java.util.Arrays.stream;
 import static java.util.stream.Collectors.toList;
 
 public class FormatterFactory {
-    private static final Map<Class<? extends Function<String, String>>, Function<String, String>> formatters = new ConcurrentHashMap<>();
     private static final Map<Class, Function<String, Object>> parsers = new HashMap<>();
     static {
         parsers.put(Byte.class, Byte::parseByte);
@@ -37,21 +35,19 @@ public class FormatterFactory {
     }
 
     public static Function<String, String> create(Class<? extends Function<String, String>> clazz, String[] strArgs) {
-        return formatters.computeIfAbsent(clazz, (cl) -> {
-            Exception ex = null;
-            for (Constructor c : stream(clazz.getDeclaredConstructors()).filter(c -> c.getParameterCount() == strArgs.length).collect(toList())) {
-                Object[] args = parse(strArgs, c.getParameterTypes());
-                if (args != null) {
-                    try {
-                        //noinspection unchecked
-                        return (Function<String, String>)c.newInstance(args);
-                    } catch (ReflectiveOperationException | IllegalArgumentException e) {
-                        ex = e;
-                    }
+        Exception ex = null;
+        for (Constructor c : stream(clazz.getDeclaredConstructors()).filter(c -> c.getParameterCount() == strArgs.length).collect(toList())) {
+            Object[] args = parse(strArgs, c.getParameterTypes());
+            if (args != null) {
+                try {
+                    //noinspection unchecked
+                    return (Function<String, String>)c.newInstance(args);
+                } catch (ReflectiveOperationException | IllegalArgumentException e) {
+                    ex = e;
                 }
             }
-            throw new IllegalArgumentException(ex == null ? new NoSuchMethodException(clazz.getName() + "@" + Arrays.toString(strArgs)) : ex);
-        });
+        }
+        throw new IllegalArgumentException(ex == null ? new NoSuchMethodException(clazz.getName() + "@" + Arrays.toString(strArgs)) : ex);
     }
 
     private static Object[] parse(String[] strArgs, Class[] paramTypes) {

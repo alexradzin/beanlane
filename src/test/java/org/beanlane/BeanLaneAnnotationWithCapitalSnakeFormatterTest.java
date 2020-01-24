@@ -2,7 +2,6 @@ package org.beanlane;
 
 
 import org.beanlane.formatter.CaseFormatter;
-import org.beanlane.formatter.ToCapitalSnakeCaseFormatter;
 import org.beanlane.formatter.ToSnakeCaseFormatter;
 import org.junit.jupiter.api.Test;
 

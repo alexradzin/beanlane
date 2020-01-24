@@ -35,4 +35,13 @@ class BeanLaneTest {
         assertEquals("LAST_NAME", lane.name(p::getLastName));
         assertEquals("HOME.CITY", lane.name(() -> p.getHome().getCity()));
     }
+
+    @Test
+    void urlNames() {
+        BeanLane lane = new BeanLane("/", new BeanNameExtractor(new ToSnakeCaseFormatter("-")));
+        Person p = lane.of(Person.class);
+        assertEquals("first-name", lane.name(p::getFirstName));
+        assertEquals("last-name", lane.name(p::getLastName));
+        assertEquals("home/city", lane.name(() -> p.getHome().getCity()));
+    }
 }

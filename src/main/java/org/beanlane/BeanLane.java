@@ -4,6 +4,7 @@ import net.sf.cglib.proxy.Callback;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
 import org.beanlane.extractor.BeanNameExtractor;
+import org.beanlane.formatter.FormatterFactory;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
@@ -15,9 +16,11 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 public class BeanLane {
-    private static final String DEFAULT_SEPARATOR = ".";
+    @VisibleForPackage
+    static final String DEFAULT_SEPARATOR = ".";
     private final Map<Class, Optional<Object>> defaultValue = new HashMap<>();
 
     private final ThreadLocal<String> nameHolder = new ThreadLocal<>();
@@ -92,5 +95,16 @@ public class BeanLane {
         } finally {
             nameHolder.remove();
         }
+    }
+
+    @VisibleForPackage static BeanLane create(Class<?> specClass, BeanNameFormatter[] formatterConfigurations, Map<Class, BeanLane> br, String laneSeparator, Function<Function<String, String>, Function<Method, String>> nameExtractorSupplier) {
+        Function<String, String> formatter = new CompositeFunction<>(
+                Arrays.stream(formatterConfigurations)
+                        .map(conf -> FormatterFactory.create(conf.value(), conf.args()))
+                        .collect(Collectors.toList()));
+        return br.computeIfAbsent(
+                specClass,
+                s -> new BeanLane(laneSeparator, nameExtractorSupplier.apply(formatter)));
+
     }
 }

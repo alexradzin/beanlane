@@ -2,18 +2,33 @@ package org.beanlane;
 
 import org.junit.jupiter.api.Test;
 
-import javax.xml.bind.annotation.XmlElement;
+import java.util.function.Function;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@BeanNameAnnotation(value = XmlElement.class, field = "somethingWrong")
+@BeanName(separator = "/", formatter = @BeanNameFormatter(value = BeanLaneWrongAnnotationTest.UnsupportedFormatter.class, args = "1"))
 @VisibleForPackage
-class BeanLaneWrongAnnotationTest implements BeanLaneAnnotationSpec {
+class BeanLaneWrongAnnotationTest implements BeanLaneBeanSpec {
     @Test
-    void beanPropertyWrongName() {
-        Person p = $(Person.class);
-        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, p::getFirstName);
-        assertTrue(e.getMessage().startsWith("Cannot extract name value from"));
+    void test() {
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> $(Person.class));
+        assertEquals(NoSuchMethodException.class, e.getCause().getClass());
+    }
+
+    /**
+     * Special formatter that has the only constructor that requires parameter of unsupported type.
+     */
+    public static class UnsupportedFormatter implements Function<String, String> {
+        public UnsupportedFormatter(BeanLaneWrongAnnotationTest test) {
+
+        }
+
+        @Override
+        public String apply(String s) {
+            return null;
+        }
     }
 }
+
+
