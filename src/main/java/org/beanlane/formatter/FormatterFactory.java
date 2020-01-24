@@ -40,6 +40,7 @@ public class FormatterFactory {
             Object[] args = parse(strArgs, c.getParameterTypes());
             if (args != null) {
                 try {
+                    c.setAccessible(true);
                     //noinspection unchecked
                     return (Function<String, String>)c.newInstance(args);
                 } catch (ReflectiveOperationException | IllegalArgumentException e) {

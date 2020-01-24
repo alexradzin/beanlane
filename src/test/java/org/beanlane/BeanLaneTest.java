@@ -1,8 +1,11 @@
 package org.beanlane;
 
+import org.beanlane.extractor.BeanNameAnnotationExtractor;
 import org.beanlane.extractor.BeanNameExtractor;
 import org.beanlane.formatter.ToSnakeCaseFormatter;
 import org.junit.jupiter.api.Test;
+
+import javax.xml.bind.annotation.XmlElement;
 
 import static org.junit.Assert.assertEquals;
 
@@ -44,4 +47,15 @@ class BeanLaneTest {
         assertEquals("last-name", lane.name(p::getLastName));
         assertEquals("home/city", lane.name(() -> p.getHome().getCity()));
     }
+
+
+    @Test
+    void namesInAnnotations() {
+        BeanLane lane = new BeanLane("/", new BeanNameAnnotationExtractor(XmlElement.class, "name"));
+        Person p = lane.of(Person.class);
+        assertEquals("FirstName", lane.name(p::getFirstName));
+        assertEquals("LastName", lane.name(p::getLastName));
+        assertEquals("HomeAddress/City", lane.name(() -> p.getHome().getCity()));
+    }
+
 }
