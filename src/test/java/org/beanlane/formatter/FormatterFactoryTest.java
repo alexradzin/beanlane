@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import java.util.function.Function;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 class FormatterFactoryTest {
@@ -27,7 +28,7 @@ class FormatterFactoryTest {
 
     @Test
     void wrongClassArgument() {
-        assertEquals(ClassNotFoundException.class, assertThrows(IllegalArgumentException.class, () -> FormatterFactory.create(FormatWithClassArgument.class, new String[] {"com.nothing.NotExisting"})).getCause().getClass());
+        assertTrue(assertThrows(IllegalArgumentException.class, () -> FormatterFactory.create(FormatWithClassArgument.class, new String[] {"com.nothing.NotExisting"})).getMessage().contains("com.nothing.NotExisting"));
     }
 
 

@@ -22,7 +22,15 @@ public class FormatterFactory {
         parsers.put(short.class, Short::parseShort);
         parsers.put(int.class, Integer::parseInt);
         parsers.put(long.class, Long::parseLong);
-        parsers.put(boolean.class, Boolean::parseBoolean);
+        parsers.put(boolean.class, s -> {
+            if ("true".equals(s)) {
+                return true;
+            } else if ("false".equals(s)) {
+                return false;
+            } else {
+                throw new IllegalArgumentException(s);
+            }
+        });
         parsers.put(char.class, s -> s.charAt(0));
         parsers.put(String.class, s -> s);
         parsers.put(Class.class, s -> {
@@ -59,13 +67,17 @@ public class FormatterFactory {
             String s = strArgs[i];
 
             Function<String, Object> p = parsers.get(paramTypes[i]);
-            if (p != null) {
-                args[i] = p.apply(s);
-            } else if (Enum.class.isAssignableFrom(t)) {
-                //noinspection unchecked
-                args[i] = Enum.valueOf(t, s);
-            } else {
-                return null; // this argment cannot be parsed to current type
+            try {
+                if (p != null) {
+                    args[i] = p.apply(s);
+                } else if (Enum.class.isAssignableFrom(t)) {
+                    //noinspection unchecked
+                    args[i] = Enum.valueOf(t, s);
+                } else {
+                    return null; // this argument cannot be parsed to current type
+                }
+            } catch (RuntimeException e) {
+                return null;
             }
         }
 
