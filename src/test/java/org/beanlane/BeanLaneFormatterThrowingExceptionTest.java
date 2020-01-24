@@ -1,17 +1,12 @@
 package org.beanlane;
 
-import org.beanlane.formatter.CaseFormatter;
-import org.beanlane.formatter.ToSnakeCaseFormatter;
 import org.junit.jupiter.api.Test;
-
-import javax.xml.bind.annotation.XmlElement;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @BeanName(formatter = {@BeanNameFormatter(value = BeanLaneFormatterThrowingExceptionTest.ThrowingFormatter.class, args = "something")})
 @VisibleForPackage

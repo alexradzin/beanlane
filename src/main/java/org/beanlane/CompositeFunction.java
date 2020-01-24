@@ -1,6 +1,5 @@
 package org.beanlane;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.function.Function;
 
