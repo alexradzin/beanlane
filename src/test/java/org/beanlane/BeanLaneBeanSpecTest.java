@@ -18,6 +18,9 @@ class BeanLaneBeanSpecTest implements BeanLaneBeanSpec {
         assertEquals("home.street", $(() -> p.getHome().getStreet()));
         assertEquals("home.streetNumber", $(() -> p.getHome().getStreetNumber()));
         assertEquals("home.capital", $(() -> p.getHome().isCapital()));
+        assertEquals("correspondence", $(p::getCorrespondence));
+        assertEquals("correspondence.zip", $(() -> p.getCorrespondence().getZip()));
+        assertEquals("spouse.firstName", $(() -> p.getSpouse().getFirstName()));
     }
 
     @Test
@@ -31,5 +34,8 @@ class BeanLaneBeanSpecTest implements BeanLaneBeanSpec {
         assertEquals("home.country", name(() -> p.getHome().getCountry()));
         assertEquals("home.street", name(() -> p.getHome().getStreet()));
         assertEquals("home.streetNumber", name(() -> p.getHome().getStreetNumber()));
+        assertEquals("correspondence", name(p::getCorrespondence));
+        assertEquals("correspondence.zip", name(() -> p.getCorrespondence().getZip()));
+        assertEquals("spouse.firstName", name(() -> p.getSpouse().getFirstName()));
     }
 }

@@ -17,6 +17,21 @@ class FormatterFactoryTest {
                 .assertValues((byte)42, (short)4242, 424242, 42424242L, '4', true);
     }
 
+    @Test
+    void primitiveArguments2() {
+        ((FormatWithPrimitiveArguments)FormatterFactory.create(
+                FormatWithPrimitiveArguments.class,
+                new String[] {"24", "2424", "242424", "24242424", "2", "false"}))
+                .assertValues((byte)24, (short)2424, 242424, 24242424L, '2', false);
+    }
+
+    @Test
+    void wrongBooleanArgument() {
+        assertTrue(assertThrows(IllegalArgumentException.class, () ->
+                FormatterFactory.create(
+                        FormatWithPrimitiveArguments.class,
+                        new String[]{"24", "2424", "242424", "24242424", "2", "not a boolean value"})).getMessage().contains("not a boolean value"));
+    }
 
     @Test
     void classArgument() {

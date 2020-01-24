@@ -10,6 +10,7 @@ public class BeanNameAnnotationExtractor implements Function<Method, String> {
     private final Class<? extends Annotation> annotationClass;
     private final String field;
     private final Function<String, String> formatter;
+    private final BeanNameExtractor nameExtractor = new BeanNameExtractor();
 
     public BeanNameAnnotationExtractor(Class<? extends Annotation> annotationClass, String field) {
         this(annotationClass, field, s -> s);
@@ -24,18 +25,20 @@ public class BeanNameAnnotationExtractor implements Function<Method, String> {
     @Override
     public String apply(Method method) {
         Annotation annotation = method.getAnnotation(annotationClass);
-        String fieldName = new BeanNameExtractor().apply(method);
+        String fieldName = nameExtractor.apply(method);
         if (annotation == null) {
-            try {
-                annotation = method.getDeclaringClass().getDeclaredField(fieldName).getAnnotation(annotationClass);
-            } catch (NoSuchFieldException e) {
-                // Nothing to do. Field is not found, the exception will be thrown in the next line.
+            for (Class c = method.getDeclaringClass(); c != null; c = c.getSuperclass()) {
+                try {
+                    annotation = c.getDeclaredField(fieldName).getAnnotation(annotationClass);
+                } catch (NoSuchFieldException e) {
+                    // Nothing to do. Field is not found, the exception will be thrown in the next line.
+                }
             }
         }
 
         if (annotation == null) {
             throw new IllegalArgumentException(format(
-                    "Either getter %s or corresponding field %s are not marked with annotation %s",
+                    "Neither getter %s nor corresponding field %s is not marked with annotation %s",
                     method.getName(), fieldName, annotationClass.getName()));
         }
 

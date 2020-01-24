@@ -2,9 +2,7 @@ package org.beanlane;
 
 import javax.xml.bind.annotation.XmlElement;
 
-public class Address {
-    @XmlElement(name = "ZIP")
-    private int zip;
+public class Address extends PostalAddress {
     @XmlElement(name = "Country")
     private String country;
     @XmlElement(name = "City")
@@ -16,7 +14,7 @@ public class Address {
     private boolean capital;
 
     public Address(int zip, String country, String city, String street, String streetNumber, boolean capital) {
-        this.zip = zip;
+        super(zip);
         this.country = country;
         this.city = city;
         this.street = street;
@@ -24,9 +22,6 @@ public class Address {
         this.capital = capital;
     }
 
-    public int getZip() {
-        return zip;
-    }
 
     public String getCountry() {
         return country;
@@ -42,14 +37,6 @@ public class Address {
 
     public String getStreetNumber() {
         return streetNumber;
-    }
-
-    public String zipCode() {
-        return "" + zip;
-    }
-
-    public String getZipCode() {
-        return "" + zip;
     }
 
     public boolean isCapital() {

@@ -23,6 +23,9 @@ class BeanLaneAnnotationWithDashSnakeFormatterTest implements BeanLaneAnnotation
         assertEquals("home-address.country", $(() -> p.getHome().getCountry()));
         assertEquals("home-address.street", $(() -> p.getHome().getStreet()));
         assertEquals("home-address.street-number", $(() -> p.getHome().getStreetNumber()));
+        assertEquals("letters", $(p::getCorrespondence));
+        assertEquals("letters.zip", $(() -> p.getCorrespondence().getZip()));
+        assertEquals("spouse.first-name", $(() -> p.getSpouse().getFirstName()));
     }
 
 
@@ -37,6 +40,9 @@ class BeanLaneAnnotationWithDashSnakeFormatterTest implements BeanLaneAnnotation
         assertEquals("home-address.country", name(() -> p.getHome().getCountry()));
         assertEquals("home-address.street", name(() -> p.getHome().getStreet()));
         assertEquals("home-address.street-number", name(() -> p.getHome().getStreetNumber()));
+        assertEquals("letters", name(p::getCorrespondence));
+        assertEquals("letters.zip", name(() -> p.getCorrespondence().getZip()));
+        assertEquals("spouse.first-name", name(() -> p.getSpouse().getFirstName()));
     }
 
     @Test
