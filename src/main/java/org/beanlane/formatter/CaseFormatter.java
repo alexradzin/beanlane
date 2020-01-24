@@ -13,13 +13,13 @@ public class CaseFormatter implements Function<String, String> {
         UPPER {
             @Override
             public String apply(String s) {
-                return s == null ? null : s.toUpperCase();
+                return s.toUpperCase();
             }
         },
         LOWER {
             @Override
             public String apply(String s) {
-                return s == null ? null : s.toLowerCase();
+                return s.toLowerCase();
             }
         },
         ;
@@ -28,6 +28,6 @@ public class CaseFormatter implements Function<String, String> {
 
     @Override
     public String apply(String s) {
-        return toCase.apply(s);
+        return s == null ? null : toCase.apply(s);
     }
 }
