@@ -2,6 +2,7 @@ package org.beanlane.formatter;
 
 import java.lang.reflect.Constructor;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
@@ -43,11 +44,61 @@ public class FormatterFactory {
         });
         parsers.put(Pattern.class, Pattern::compile);
     }
+    private static final Map<Class, Integer> typeWeights = new HashMap<>();
+    static {
+        typeWeights.put(byte.class, 1);
+        typeWeights.put(short.class,2);
+        typeWeights.put(int.class, 4);
+        typeWeights.put(long.class, 8);
+        typeWeights.put(boolean.class, 0);
+        typeWeights.put(Byte.class, 1);
+        typeWeights.put(Short.class,2);
+        typeWeights.put(Integer.class, 4);
+        typeWeights.put(Long.class, 8);
+        typeWeights.put(Boolean.class, 0);
+        typeWeights.put(char.class, Integer.MAX_VALUE - 1);
+        typeWeights.put(Character.class, Integer.MAX_VALUE - 1);
+        typeWeights.put(String.class, Integer.MAX_VALUE);
+    }
+
+    private static class TypeComparator implements Comparator<Class> {
+        @Override
+        public int compare(Class c1, Class c2) {
+            return weight(c1) - weight(c2);
+        }
+
+        private int weight(Class c) {
+            return typeWeights.computeIfAbsent(c, Object::hashCode);
+        }
+    }
+
+    private static class TypesComparator implements Comparator<Class[]> {
+        private final TypeComparator tc = new TypeComparator();
+        @Override
+        public int compare(Class[] c1, Class[] c2) {
+            int n = Math.min(c1.length, c2.length);
+            for (int i = 0; i < n; i++) {
+                int r = tc.compare(c1[i], c2[i]);
+                if (r != 0) {
+                    return r;
+                }
+            }
+            return 0;
+        }
+    }
+
+    private static class ConstructorComparator implements Comparator<Constructor> {
+        private final TypesComparator tc = new TypesComparator();
+        @Override
+        public int compare(Constructor c1, Constructor c2) {
+            return tc.compare(c1.getParameterTypes(), c2.getParameterTypes());
+        }
+    }
 
     public static Function<String, String> create(Class<? extends Function<String, String>> clazz, Class<?>[] paramTypes, String[] strArgs) {
         if (paramTypes == null) {
             Exception ex = null;
-            for (Constructor c : stream(clazz.getDeclaredConstructors()).filter(c -> c.getParameterCount() == strArgs.length).collect(toList())) {
+            for (Constructor c : stream(clazz.getDeclaredConstructors()).sorted(new ConstructorComparator()).filter(c -> c.getParameterCount() == strArgs.length).collect(toList())) {
                 Object[] args = parse(strArgs, c.getParameterTypes());
                 if (args != null) {
                     try {
