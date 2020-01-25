@@ -111,11 +111,15 @@ public class BeanLane {
     @VisibleForPackage static BeanLane create(Class<?> specClass, BeanNameFormatter[] formatterConfigurations, Map<Class, BeanLane> br, String laneSeparator, Function<Function<String, String>, Function<Method, String>> nameExtractorSupplier) {
         Function<String, String> formatter = new CompositeFunction<>(
                 Arrays.stream(formatterConfigurations)
-                        .map(conf -> FormatterFactory.create(conf.value(), conf.args()))
+                        .map(conf -> FormatterFactory.create(conf.value(), paramTypes(conf), conf.args()))
                         .collect(Collectors.toList()));
         return br.computeIfAbsent(
                 specClass,
                 s -> new BeanLane(laneSeparator, nameExtractorSupplier.apply(formatter)));
 
+    }
+
+    private static Class[] paramTypes(BeanNameFormatter conf) {
+        return conf.paramTypes().length == 1 && BeanNameFormatter.class.equals(conf.paramTypes()[0]) ? null : conf.paramTypes();
     }
 }

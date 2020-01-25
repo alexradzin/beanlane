@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.regex.Pattern;
 
 import static java.util.Arrays.stream;
 import static java.util.stream.Collectors.toList;
@@ -40,23 +41,31 @@ public class FormatterFactory {
                 throw new IllegalArgumentException(e);
             }
         });
+        parsers.put(Pattern.class, Pattern::compile);
     }
 
-    public static Function<String, String> create(Class<? extends Function<String, String>> clazz, String[] strArgs) {
-        Exception ex = null;
-        for (Constructor c : stream(clazz.getDeclaredConstructors()).filter(c -> c.getParameterCount() == strArgs.length).collect(toList())) {
-            Object[] args = parse(strArgs, c.getParameterTypes());
-            if (args != null) {
-                try {
-                    c.setAccessible(true);
-                    //noinspection unchecked
-                    return (Function<String, String>)c.newInstance(args);
-                } catch (ReflectiveOperationException | IllegalArgumentException e) {
-                    ex = e;
+    public static Function<String, String> create(Class<? extends Function<String, String>> clazz, Class<?>[] paramTypes, String[] strArgs) {
+        if (paramTypes == null) {
+            Exception ex = null;
+            for (Constructor c : stream(clazz.getDeclaredConstructors()).filter(c -> c.getParameterCount() == strArgs.length).collect(toList())) {
+                Object[] args = parse(strArgs, c.getParameterTypes());
+                if (args != null) {
+                    try {
+                        c.setAccessible(true);
+                        //noinspection unchecked
+                        return (Function<String, String>) c.newInstance(args);
+                    } catch (ReflectiveOperationException | IllegalArgumentException e) {
+                        ex = e;
+                    }
                 }
             }
+            throw new IllegalArgumentException(ex == null ? new NoSuchMethodException(clazz.getName() + "@" + Arrays.toString(strArgs)) : ex);
         }
-        throw new IllegalArgumentException(ex == null ? new NoSuchMethodException(clazz.getName() + "@" + Arrays.toString(strArgs)) : ex);
+        try {
+            return clazz.getDeclaredConstructor(paramTypes).newInstance(parse(strArgs, paramTypes));
+        } catch (ReflectiveOperationException | IllegalArgumentException e) {
+            throw new IllegalArgumentException(e.getMessage(), e);
+        }
     }
 
     private static Object[] parse(String[] strArgs, Class[] paramTypes) {

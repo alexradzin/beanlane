@@ -16,6 +16,7 @@ import java.util.function.Function;
 @Documented
 public @interface BeanNameFormatter {
     Class<? extends Function<String, String>> value() default NoOp.class;
+    Class<?>[] paramTypes() default {BeanNameFormatter.class};
     String[] args() default {};
 
 

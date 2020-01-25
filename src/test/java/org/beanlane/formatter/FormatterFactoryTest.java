@@ -12,7 +12,7 @@ class FormatterFactoryTest {
     @Test
     void primitiveArguments() {
         ((FormatWithPrimitiveArguments)FormatterFactory.create(
-                FormatWithPrimitiveArguments.class,
+                FormatWithPrimitiveArguments.class, null,
                 new String[] {"42", "4242", "424242", "42424242", "4", "true"}))
                 .assertValues((byte)42, (short)4242, 424242, 42424242L, '4', true);
     }
@@ -20,7 +20,7 @@ class FormatterFactoryTest {
     @Test
     void primitiveArguments2() {
         ((FormatWithPrimitiveArguments)FormatterFactory.create(
-                FormatWithPrimitiveArguments.class,
+                FormatWithPrimitiveArguments.class, null,
                 new String[] {"24", "2424", "242424", "24242424", "2", "false"}))
                 .assertValues((byte)24, (short)2424, 242424, 24242424L, '2', false);
     }
@@ -29,21 +29,21 @@ class FormatterFactoryTest {
     void wrongBooleanArgument() {
         assertTrue(assertThrows(IllegalArgumentException.class, () ->
                 FormatterFactory.create(
-                        FormatWithPrimitiveArguments.class,
+                        FormatWithPrimitiveArguments.class, null,
                         new String[]{"24", "2424", "242424", "24242424", "2", "not a boolean value"})).getMessage().contains("not a boolean value"));
     }
 
     @Test
     void classArgument() {
         assertEquals(getClass(), ((FormatWithClassArgument)FormatterFactory.create(
-                FormatWithClassArgument.class,
+                FormatWithClassArgument.class, null,
                 new String[] {getClass().getName()})).getClazz()
         );
     }
 
     @Test
     void wrongClassArgument() {
-        assertTrue(assertThrows(IllegalArgumentException.class, () -> FormatterFactory.create(FormatWithClassArgument.class, new String[] {"com.nothing.NotExisting"})).getMessage().contains("com.nothing.NotExisting"));
+        assertTrue(assertThrows(IllegalArgumentException.class, () -> FormatterFactory.create(FormatWithClassArgument.class, null, new String[] {"com.nothing.NotExisting"})).getMessage().contains("com.nothing.NotExisting"));
     }
 
 
