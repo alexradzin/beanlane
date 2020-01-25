@@ -17,7 +17,12 @@ public interface BeanLaneBeanSpec {
             return br.computeIfAbsent(getClass(), x -> bean).of(clazz);
         }
 
-        return BeanLane.create(specClass, annotation.formatter(), br, annotation.separator(), BeanNameExtractor::new).of(clazz);
+        return BeanLane.create(
+                specClass,
+                annotation.formatter(),
+                br,
+                annotation.separator(),
+                formatter -> new BeanNameExtractor(formatter, annotation.strict())).of(clazz);
     }
 
     default <T> String $(Supplier<T> f)  {

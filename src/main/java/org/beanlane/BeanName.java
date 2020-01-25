@@ -14,4 +14,6 @@ public @interface BeanName {
     String separator() default BeanLane.DEFAULT_SEPARATOR;
 
     BeanNameFormatter[] formatter() default @BeanNameFormatter;
+
+    boolean strict() default true;
 }

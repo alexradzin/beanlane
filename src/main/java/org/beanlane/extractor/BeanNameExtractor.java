@@ -10,13 +10,19 @@ import static java.lang.String.format;
 public class BeanNameExtractor implements Function<Method, String> {
     private static final Function<String, String> toCamelCase = new CapitalizationFormatter(false);
     private final Function<String, String> formatter;
+    private final boolean strict;
 
     public BeanNameExtractor() {
         this(toCamelCase);
     }
 
     public BeanNameExtractor(Function<String, String> formatter) {
+        this(formatter, true);
+    }
+
+    public BeanNameExtractor(Function<String, String> formatter, boolean strict) {
         this.formatter = formatter;
+        this.strict = strict;
     }
 
     @Override
@@ -24,10 +30,14 @@ public class BeanNameExtractor implements Function<Method, String> {
         return formatter.apply(stripGetterPrefix(method.getName()));
     }
 
-    private static String stripGetterPrefix(String getter) {
+    private String stripGetterPrefix(String getter) {
         String name = getter.startsWith("get") ? getter.substring(3) : getter.startsWith("is") ? getter.substring(2) : null;
         if (name == null) {
-            throw new IllegalArgumentException(format("Invoked method %s must be a getter", getter));
+            if (strict) {
+                throw new IllegalArgumentException(format("Invoked method %s must be a getter", getter));
+            } else {
+                name = getter;
+            }
         }
         return name;
     }
