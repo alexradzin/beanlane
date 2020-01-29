@@ -37,7 +37,7 @@ public class BeanNameAnnotationExtractor implements Function<Method, String> {
         }
 
         if (annotation == null) {
-            throw new IllegalArgumentException(format(
+            throw new UnsupportedOperationException(format(
                     "Neither getter %s nor corresponding field %s is not marked with annotation %s",
                     method.getName(), fieldName, annotationClass.getName()));
         }
@@ -47,10 +47,5 @@ public class BeanNameAnnotationExtractor implements Function<Method, String> {
         } catch (ReflectiveOperationException e) {
             throw new IllegalArgumentException("Cannot extract name value from " + annotationClass + "." + field, e);
         }
-    }
-
-    @Override
-    public String toString() {
-        return format("%s(%s, %s, %s)", getClass(), annotationClass, field, formatter);
     }
 }

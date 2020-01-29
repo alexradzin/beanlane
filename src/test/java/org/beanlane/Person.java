@@ -1,10 +1,14 @@
 package org.beanlane;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.xml.bind.annotation.XmlElement;
 
 public class Person implements FullName{
 
     private String firstName;
+    @JsonProperty("last-name")
     @XmlElement(name = "LastName")
     private String lastName;
     private Address home;
@@ -22,6 +26,7 @@ public class Person implements FullName{
         this.correspondence = correspondence;
     }
 
+    @JsonProperty("first-name")
     @XmlElement(name = "FirstName")
     public String getFirstName() {
         return firstName;
@@ -36,6 +41,7 @@ public class Person implements FullName{
         return home;
     }
 
+    @JsonIgnore
     @XmlElement(name = "Letters")
     public PostalAddress getCorrespondence() {
         return correspondence;

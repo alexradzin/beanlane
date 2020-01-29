@@ -41,6 +41,6 @@ class BeanLaneAnnotationWithSnakeFormatterTest implements BeanLaneAnnotationSpec
     @Test
     void notField() {
         Address a = $(Address.class);
-        assertThrows(IllegalArgumentException.class, a::getZipCode);
+        assertThrows(UnsupportedOperationException.class, a::getZipCode);
     }
 }

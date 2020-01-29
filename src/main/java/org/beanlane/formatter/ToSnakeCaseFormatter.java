@@ -43,9 +43,4 @@ public class ToSnakeCaseFormatter implements Function<String, String> {
         }
         return name;
     }
-
-    @Override
-    public String toString() {
-        return format("%s@%d(%s, %s)", getClass(), System.identityHashCode(this), separator, upperCase);
-    }
 }

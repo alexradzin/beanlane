@@ -3,6 +3,7 @@ package org.beanlane;
 import java.lang.annotation.Annotation;
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
+import java.lang.annotation.Repeatable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
@@ -13,9 +14,10 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
+@Repeatable(BeanNameAnnotations.class)
 @Documented
 public @interface BeanNameAnnotation {
-    String separator() default BeanLane.DEFAULT_SEPARATOR;
+    String separator() default DEFAULT_SEPARATOR;
 
     /**
      * The annotation that holds customized bean property
@@ -28,4 +30,6 @@ public @interface BeanNameAnnotation {
     String field() default "value";
 
     BeanNameFormatter[] formatter() default @BeanNameFormatter;
+
+    String DEFAULT_SEPARATOR = "$$DEFAULT_SEPARATOR$$";
 }

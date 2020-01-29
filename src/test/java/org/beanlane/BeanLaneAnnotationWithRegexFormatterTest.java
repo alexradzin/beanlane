@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @BeanNameAnnotation(
         value = XmlElement.class, field = "name",
         formatter = {
-                @BeanNameFormatter(value = RegexFormatter.class, args = {"([A-Z][a-z])", "g", "_$1"}),
+                @BeanNameFormatter(value = RegexFormatter.class, args = {"([A-Z][a-z])", "gmo", "_$1"}),
                 @BeanNameFormatter(value = RegexFormatter.class, args = {"^_", "", ""}),
         })
 class BeanLaneAnnotationWithRegexFormatterTest implements BeanLaneAnnotationSpec {
@@ -47,6 +47,6 @@ class BeanLaneAnnotationWithRegexFormatterTest implements BeanLaneAnnotationSpec
     @Test
     void notField() {
         Address a = $(Address.class);
-        assertThrows(IllegalArgumentException.class, a::getZipCode);
+        assertThrows(UnsupportedOperationException.class, a::getZipCode);
     }
 }

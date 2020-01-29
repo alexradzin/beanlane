@@ -1,10 +1,18 @@
 package org.beanlane;
 
 import org.beanlane.extractor.BeanNameAnnotationExtractor;
+import org.beanlane.formatter.FormatterFactory;
 
+import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 import static java.lang.String.format;
 
@@ -17,13 +25,42 @@ public interface BeanLaneAnnotationSpec {
 
     default <T> T wrap(Class<T> clazz) {
         Class<?> specClass = getClass();
-        BeanNameAnnotation annotation = specClass.getAnnotation(BeanNameAnnotation.class);
-        if (annotation == null) {
+        BeanNameAnnotation[] annotations = specClass.getAnnotationsByType(BeanNameAnnotation.class);
+
+        if (annotations == null || annotations.length == 0) {
             throw new IllegalArgumentException(format("Class %s is not marked with annotation %s", getClass().getName(), BeanNameAnnotation.class.getName()));
         }
+        Collection<String> separators = Arrays.stream(annotations).map(BeanNameAnnotation::separator).distinct().collect(Collectors.toList());
+        if (separators.size() > 1) {
+            throw new IllegalArgumentException("All annotations must use the same separator but were different: " + separators);
+        }
 
-        return BeanLane.create(specClass, annotation.formatter(), br, annotation.separator(), formatter -> new BeanNameAnnotationExtractor(annotation.value(), annotation.field(), formatter)).of(clazz);
+        final String separator;
+        Iterator<String> it = separators.iterator();
+        if (it.hasNext()) {
+            String confSeparator = it.next();
+            if (BeanNameAnnotation.DEFAULT_SEPARATOR.equals(confSeparator)) {
+                confSeparator = BeanLane.DEFAULT_SEPARATOR;
+            }
+            separator = confSeparator;
+        } else {
+            separator = BeanLane.DEFAULT_SEPARATOR;
+        }
+
+        Map<Function<String, String>, Function<Method, String>> formatterToExtractor = new LinkedHashMap<>();
+        for (BeanNameAnnotation a : annotations) {
+            Function<String, String> formatter = new ChainedFunction<>(
+                    Arrays.stream(a.formatter())
+                            .map(conf -> FormatterFactory.create(conf.value(), paramTypes(conf), conf.args()))
+                            .collect(Collectors.toList()));
+            Function<Method, String> nameExtractor = new BeanNameAnnotationExtractor(a.value(), a.field(), formatter);
+            formatterToExtractor.put(formatter, nameExtractor);
+        }
+
+
+        return br.computeIfAbsent(specClass, s -> new BeanLane(separator, new FirstTakeFunction<>(formatterToExtractor.values()))).of(clazz);
     }
+
 
     default <T> String name(Supplier<T> f)  {
         return $(f);
@@ -32,4 +69,14 @@ public interface BeanLaneAnnotationSpec {
     default <T> String $(Supplier<T> f)  {
         return br.get(getClass()).name(f);
     }
+
+//    static String getSeparator(Supplier<String> separatorSupplier) {
+//        String separator = separatorSupplier.get();
+//        return BeanNameAnnotation.DEFAULT_SEPARATOR.equals(separator) ? BeanLane.DEFAULT_SEPARATOR : separator;
+//    }
+
+    static Class[] paramTypes(BeanNameFormatter conf) {
+        return conf.paramTypes().length == 1 && BeanNameFormatter.class.equals(conf.paramTypes()[0]) ? null : conf.paramTypes();
+    }
+
 }

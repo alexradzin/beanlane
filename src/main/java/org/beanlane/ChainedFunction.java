@@ -5,10 +5,10 @@ import java.util.function.Function;
 
 import static java.lang.String.format;
 
-public class CompositeFunction<T> implements Function<T, T> {
+public class ChainedFunction<T> implements Function<T, T> {
     private final Collection<Function<T, T>> functions;
 
-    public CompositeFunction(Collection<Function<T, T>> functions) {
+    public ChainedFunction(Collection<Function<T, T>> functions) {
         this.functions = functions;
     }
 
@@ -19,10 +19,5 @@ public class CompositeFunction<T> implements Function<T, T> {
             result = f.apply(result);
         }
         return result;
-    }
-
-    @Override
-    public String toString() {
-        return format("%s:%s", getClass(), functions);
     }
 }

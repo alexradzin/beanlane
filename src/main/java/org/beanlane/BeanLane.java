@@ -109,7 +109,7 @@ public class BeanLane {
     }
 
     @VisibleForPackage static BeanLane create(Class<?> specClass, BeanNameFormatter[] formatterConfigurations, Map<Class, BeanLane> br, String laneSeparator, Function<Function<String, String>, Function<Method, String>> nameExtractorSupplier) {
-        Function<String, String> formatter = new CompositeFunction<>(
+        Function<String, String> formatter = new ChainedFunction<>(
                 Arrays.stream(formatterConfigurations)
                         .map(conf -> FormatterFactory.create(conf.value(), paramTypes(conf), conf.args()))
                         .collect(Collectors.toList()));

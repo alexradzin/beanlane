@@ -1,15 +1,21 @@
 package org.beanlane;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.xml.bind.annotation.XmlElement;
 import java.util.Map;
 
 public class Address extends PostalAddress {
+    @JsonProperty("state")
     @XmlElement(name = "Country")
     private String country;
+    @JsonProperty("town")
     @XmlElement(name = "City")
     private String city;
+    @JsonProperty("street")
     @XmlElement(name = "Street")
     private String street;
+    @JsonProperty("number")
     @XmlElement(name = "StreetNumber")
     private String streetNumber;
     private boolean capital;
