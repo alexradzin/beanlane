@@ -9,8 +9,8 @@ import javax.xml.bind.annotation.XmlElement;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@BeanNameAnnotation(separator = "/", value = JsonProperty.class)
-@BeanNameAnnotation(separator = "#", value = XmlElement.class, field = "name")
+@BeanPropertyExtractor(separator = "/", value = JsonProperty.class)
+@BeanPropertyExtractor(separator = "#", value = XmlElement.class, field = "name")
 @VisibleForPackage
 class BeanLaneTwoAnnotationsDifferentSeparatorsTest implements BeanLaneAnnotationSpec {
     @Test

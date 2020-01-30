@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlElement;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@BeanNameAnnotation(value = XmlElement.class, field = "name", formatter = @BeanNameFormatter(ToSnakeCaseFormatter.class))
+@BeanPropertyExtractor(value = XmlElement.class, field = "name", formatter = @BeanPropertyFormatter(ToSnakeCaseFormatter.class))
 class BeanLaneAnnotationWithSnakeFormatterTest implements BeanLaneAnnotationSpec {
     @Test
     void beanPropertyShortName() {

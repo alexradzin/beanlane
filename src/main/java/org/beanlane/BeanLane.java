@@ -108,7 +108,7 @@ public class BeanLane {
         }
     }
 
-    @VisibleForPackage static BeanLane create(Class<?> specClass, BeanNameFormatter[] formatterConfigurations, Map<Class, BeanLane> br, String laneSeparator, Function<Function<String, String>, Function<Method, String>> nameExtractorSupplier) {
+    @VisibleForPackage static BeanLane create(Class<?> specClass, BeanPropertyFormatter[] formatterConfigurations, Map<Class, BeanLane> br, String laneSeparator, Function<Function<String, String>, Function<Method, String>> nameExtractorSupplier) {
         Function<String, String> formatter = new ChainedFunction<>(
                 Arrays.stream(formatterConfigurations)
                         .map(conf -> FormatterFactory.create(conf.value(), paramTypes(conf), conf.args()))
@@ -119,7 +119,7 @@ public class BeanLane {
 
     }
 
-    private static Class[] paramTypes(BeanNameFormatter conf) {
-        return conf.paramTypes().length == 1 && BeanNameFormatter.class.equals(conf.paramTypes()[0]) ? null : conf.paramTypes();
+    private static Class[] paramTypes(BeanPropertyFormatter conf) {
+        return conf.paramTypes().length == 1 && BeanPropertyFormatter.class.equals(conf.paramTypes()[0]) ? null : conf.paramTypes();
     }
 }

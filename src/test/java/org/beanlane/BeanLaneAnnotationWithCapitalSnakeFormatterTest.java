@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.XmlElement;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@BeanNameAnnotation(value = XmlElement.class, field = "name", formatter = {@BeanNameFormatter(ToSnakeCaseFormatter.class), @BeanNameFormatter(value = CaseFormatter.class, args = "UPPER")})
+@BeanPropertyExtractor(value = XmlElement.class, field = "name", formatter = {@BeanPropertyFormatter(ToSnakeCaseFormatter.class), @BeanPropertyFormatter(value = CaseFormatter.class, args = "UPPER")})
 @VisibleForPackage
 class BeanLaneAnnotationWithCapitalSnakeFormatterTest implements BeanLaneAnnotationSpec {
     @Test

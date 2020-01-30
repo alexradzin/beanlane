@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlElement;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@BeanNameAnnotation(value = XmlElement.class, field = "somethingWrong")
+@BeanPropertyExtractor(value = XmlElement.class, field = "somethingWrong")
 @VisibleForPackage
 class BeanLaneWrongFormatterAnnotationTest implements BeanLaneAnnotationSpec {
     @Test

@@ -11,13 +11,13 @@ import javax.xml.bind.annotation.XmlElement;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@BeanNameAnnotation(
+@BeanPropertyExtractor(
         value = XmlElement.class,
         field = "name",
         formatter = {
-                @BeanNameFormatter(value = ToSnakeCaseFormatter.class, args = "#"),
-                @BeanNameFormatter(value = CaseFormatter.class, args = "LOWER"),
-                @BeanNameFormatter(value = CapitalizationFormatter.class, args = "true")
+                @BeanPropertyFormatter(value = ToSnakeCaseFormatter.class, args = "#"),
+                @BeanPropertyFormatter(value = CaseFormatter.class, args = "LOWER"),
+                @BeanPropertyFormatter(value = CapitalizationFormatter.class, args = "true")
         })
 @VisibleForPackage
 class BeanLaneAnnotationWithCapitalisationSnakeFormatterTest implements BeanLaneAnnotationSpec {

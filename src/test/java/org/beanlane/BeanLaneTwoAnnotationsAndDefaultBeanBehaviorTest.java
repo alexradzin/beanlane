@@ -9,9 +9,9 @@ import javax.xml.bind.annotation.XmlElement;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@BeanNameAnnotation(value = JsonProperty.class)
-@BeanNameAnnotation(value = XmlElement.class, field = "name")
-@BeanNameAnnotation(formatter = @BeanNameFormatter(value = CapitalizationFormatter.class, args = "false"))
+@BeanPropertyExtractor(value = JsonProperty.class)
+@BeanPropertyExtractor(value = XmlElement.class, field = "name")
+@BeanPropertyExtractor(formatter = @BeanPropertyFormatter(value = CapitalizationFormatter.class, args = "false"))
 @VisibleForPackage
 class BeanLaneTwoAnnotationsAndDefaultBeanBehaviorTest implements BeanLaneAnnotationSpec {
     @Test

@@ -1,9 +1,7 @@
 package org.beanlane;
 
 
-import org.beanlane.formatter.CapitalizationFormatter;
 import org.beanlane.formatter.RegexFormatter;
-import org.beanlane.formatter.ToSnakeCaseFormatter;
 import org.junit.jupiter.api.Test;
 
 import javax.xml.bind.annotation.XmlElement;
@@ -11,11 +9,11 @@ import javax.xml.bind.annotation.XmlElement;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@BeanNameAnnotation(
+@BeanPropertyExtractor(
         value = XmlElement.class, field = "name",
         formatter = {
-                @BeanNameFormatter(value = RegexFormatter.class, args = {"([A-Z][a-z])", "gmo", "_$1"}),
-                @BeanNameFormatter(value = RegexFormatter.class, args = {"^_", "", ""}),
+                @BeanPropertyFormatter(value = RegexFormatter.class, args = {"([A-Z][a-z])", "gmo", "_$1"}),
+                @BeanPropertyFormatter(value = RegexFormatter.class, args = {"^_", "", ""}),
         })
 class BeanLaneAnnotationWithRegexFormatterTest implements BeanLaneAnnotationSpec {
     @Test

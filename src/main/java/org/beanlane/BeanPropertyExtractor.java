@@ -14,22 +14,22 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-@Repeatable(BeanNameAnnotations.class)
+@Repeatable(BeanPropertyExtractorConfigurations.class)
 @Documented
-public @interface BeanNameAnnotation {
+public @interface BeanPropertyExtractor {
     String separator() default DEFAULT_SEPARATOR;
 
     /**
      * The annotation that holds customized bean property
      */
-    Class<? extends Annotation> value() default BeanNameAnnotation.class;
+    Class<? extends Annotation> value() default BeanPropertyExtractor.class;
 
     /**
      * The name of annotation method that holds the property name.
      */
     String field() default "value";
 
-    BeanNameFormatter[] formatter() default @BeanNameFormatter;
+    BeanPropertyFormatter[] formatter() default @BeanPropertyFormatter;
 
     String DEFAULT_SEPARATOR = "$$DEFAULT_SEPARATOR$$";
 

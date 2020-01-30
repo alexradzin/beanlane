@@ -2,9 +2,6 @@ package org.beanlane;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.beanlane.formatter.CaseFormatter;
-import org.beanlane.formatter.ToSnakeCaseFormatter;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import javax.xml.bind.annotation.XmlElement;
@@ -12,8 +9,8 @@ import javax.xml.bind.annotation.XmlElement;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@BeanNameAnnotation(value = JsonProperty.class)
-@BeanNameAnnotation(value = XmlElement.class, field = "name")
+@BeanPropertyExtractor(value = JsonProperty.class)
+@BeanPropertyExtractor(value = XmlElement.class, field = "name")
 @VisibleForPackage
 class BeanLaneTwoAnnotationsTest implements BeanLaneAnnotationSpec {
     @Test

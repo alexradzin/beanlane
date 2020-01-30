@@ -14,9 +14,9 @@ import java.util.function.Function;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 @Documented
-public @interface BeanNameFormatter {
+public @interface BeanPropertyFormatter {
     Class<? extends Function<String, String>> value() default NoOp.class;
-    Class<?>[] paramTypes() default {BeanNameFormatter.class};
+    Class<?>[] paramTypes() default {BeanPropertyFormatter.class};
     String[] args() default {};
 
 
