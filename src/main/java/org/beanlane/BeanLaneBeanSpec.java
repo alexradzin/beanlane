@@ -12,16 +12,17 @@ public interface BeanLaneBeanSpec {
 
     default <T> T wrap(Class<T> clazz) {
         Class<?> specClass = getClass();
-        BeanName annotation = specClass.getAnnotation(BeanName.class);
+        BeanNameAnnotation annotation = specClass.getAnnotation(BeanNameAnnotation.class);
         if (annotation == null) {
             return br.computeIfAbsent(getClass(), x -> bean).of(clazz);
         }
 
+        String separator = BeanNameAnnotation.DEFAULT_SEPARATOR.equals(annotation.separator()) ? "." : annotation.separator();
         return BeanLane.create(
                 specClass,
                 annotation.formatter(),
                 br,
-                annotation.separator(),
+                separator,
                 formatter -> new BeanNameExtractor(formatter, annotation.strict())).of(clazz);
     }
 

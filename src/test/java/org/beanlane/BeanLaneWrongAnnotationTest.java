@@ -7,7 +7,7 @@ import java.util.function.Function;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@BeanName(separator = "/", formatter = @BeanNameFormatter(value = BeanLaneWrongAnnotationTest.UnsupportedFormatter.class, args = "1"))
+@BeanNameAnnotation(separator = "/", formatter = @BeanNameFormatter(value = BeanLaneWrongAnnotationTest.UnsupportedFormatter.class, args = "1"))
 @VisibleForPackage
 class BeanLaneWrongAnnotationTest implements BeanLaneBeanSpec {
     @Test

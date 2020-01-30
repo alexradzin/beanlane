@@ -1,6 +1,7 @@
 package org.beanlane;
 
 
+import org.beanlane.formatter.CapitalizationFormatter;
 import org.beanlane.formatter.RegexFormatter;
 import org.beanlane.formatter.ToSnakeCaseFormatter;
 import org.junit.jupiter.api.Test;

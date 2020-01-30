@@ -1,8 +1,10 @@
 package org.beanlane;
 
 import org.beanlane.extractor.BeanNameAnnotationExtractor;
+import org.beanlane.extractor.BeanNameExtractor;
 import org.beanlane.formatter.FormatterFactory;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collection;
@@ -47,13 +49,18 @@ public interface BeanLaneAnnotationSpec {
             separator = BeanLane.DEFAULT_SEPARATOR;
         }
 
+
         Map<Function<String, String>, Function<Method, String>> formatterToExtractor = new LinkedHashMap<>();
         for (BeanNameAnnotation a : annotations) {
             Function<String, String> formatter = new ChainedFunction<>(
                     Arrays.stream(a.formatter())
                             .map(conf -> FormatterFactory.create(conf.value(), paramTypes(conf), conf.args()))
                             .collect(Collectors.toList()));
-            Function<Method, String> nameExtractor = new BeanNameAnnotationExtractor(a.value(), a.field(), formatter);
+
+            Class<? extends Annotation> aClass = a.value();
+            Function<Method, String> nameExtractor = BeanNameAnnotation.class.equals(aClass) ?
+                    new BeanNameExtractor(formatter) :
+                    new BeanNameAnnotationExtractor(aClass, a.field(), formatter);
             formatterToExtractor.put(formatter, nameExtractor);
         }
 

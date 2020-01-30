@@ -11,5 +11,4 @@ import java.lang.annotation.Target;
 @Documented
 public @interface BeanNameAnnotations {
     BeanNameAnnotation[] value();
-    String separator() default BeanLane.DEFAULT_SEPARATOR;
 }

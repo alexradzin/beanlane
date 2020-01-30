@@ -22,7 +22,7 @@ public @interface BeanNameAnnotation {
     /**
      * The annotation that holds customized bean property
      */
-    Class<? extends Annotation> value();
+    Class<? extends Annotation> value() default BeanNameAnnotation.class;
 
     /**
      * The name of annotation method that holds the property name.
@@ -32,4 +32,7 @@ public @interface BeanNameAnnotation {
     BeanNameFormatter[] formatter() default @BeanNameFormatter;
 
     String DEFAULT_SEPARATOR = "$$DEFAULT_SEPARATOR$$";
+
+    // TODO: remove; replace by method name regex
+    boolean strict() default true;
 }

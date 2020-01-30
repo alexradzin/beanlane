@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @VisibleForPackage
-@BeanName(separator = "/", formatter = @BeanNameFormatter(value = CaseFormatter.class, args = "LOWER"))
+@BeanNameAnnotation(separator = "/", formatter = @BeanNameFormatter(value = CaseFormatter.class, args = "LOWER"))
 class BeanLaneBeanSpecWithAnnotationTest implements BeanLaneBeanSpec {
     @Test
     void shortNotation() {

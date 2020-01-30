@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@BeanName(strict = false, formatter = @BeanNameFormatter(value = CapitalizationFormatter.class, args = "false"))
+@BeanNameAnnotation(strict = false, formatter = @BeanNameFormatter(value = CapitalizationFormatter.class, args = "false"))
 @VisibleForPackage
 class BeanLaneNotBeanConventionGetterTest implements BeanLaneBeanSpec {
     @Test

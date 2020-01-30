@@ -6,7 +6,7 @@ import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@BeanName(formatter = @BeanNameFormatter(value = BeanLaneFormatterWithParamTypesTest.TestFormatter.class, paramTypes = String.class, args = "123"))
+@BeanNameAnnotation(formatter = @BeanNameFormatter(value = BeanLaneFormatterWithParamTypesTest.TestFormatter.class, paramTypes = String.class, args = "123"))
 @VisibleForPackage
 class BeanLaneFormatterWithParamTypesTest implements BeanLaneBeanSpec {
     @Test

@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@BeanName(formatter = @BeanNameFormatter(value = CaseFormatter.class, args = "WRONG"))
+@BeanNameAnnotation(formatter = @BeanNameFormatter(value = CaseFormatter.class, args = "WRONG"))
 @VisibleForPackage
 class BeanLaneWrongFormatterArgumentTest implements BeanLaneBeanSpec {
     @Test

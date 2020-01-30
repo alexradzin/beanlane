@@ -8,7 +8,7 @@ import java.util.function.Function;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@BeanName(formatter = {@BeanNameFormatter(value = BeanLaneFormatterThrowingExceptionTest.ThrowingFormatter.class, args = "something")})
+@BeanNameAnnotation(formatter = {@BeanNameFormatter(value = BeanLaneFormatterThrowingExceptionTest.ThrowingFormatter.class, args = "something")})
 @VisibleForPackage
 class BeanLaneFormatterThrowingExceptionTest implements BeanLaneBeanSpec {
     @Test
