@@ -23,7 +23,7 @@ public interface BeanLaneBeanSpec {
                 annotation.formatter(),
                 br,
                 separator,
-                formatter -> new BeanNameExtractor(formatter, annotation.strict())).of(clazz);
+                BeanNameExtractor::new).of(clazz);
     }
 
     default <T> String $(Supplier<T> f)  {

@@ -32,7 +32,4 @@ public @interface BeanPropertyExtractor {
     BeanPropertyFormatter[] formatter() default @BeanPropertyFormatter;
 
     String DEFAULT_SEPARATOR = "$$DEFAULT_SEPARATOR$$";
-
-    // TODO: remove; replace by method name regex
-    boolean strict() default true;
 }

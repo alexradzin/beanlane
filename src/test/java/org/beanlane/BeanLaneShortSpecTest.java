@@ -37,8 +37,8 @@ class BeanLaneShortSpecTest implements BeanLaneShortSpec {
 
     @Test
     void notGetter() {
-        Address a = $(Address.class);
-        assertThrows(IllegalArgumentException.class, a::zipCode);
+        assertEquals("home.zipCode", $(() -> $(Person.class).getHome().zipCode()));
+        assertEquals("zipCode", $($(Address.class)::zipCode));
     }
 
     @Test
