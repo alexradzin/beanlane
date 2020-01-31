@@ -3,6 +3,7 @@ package org.beanlane;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.beanlane.formatter.CapitalizationFormatter;
+import org.beanlane.formatter.GetterFormatter;
 import org.junit.jupiter.api.Test;
 
 import javax.xml.bind.annotation.XmlElement;
@@ -11,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @BeanPropertyExtractor(value = JsonProperty.class)
 @BeanPropertyExtractor(value = XmlElement.class, field = "name")
-@BeanPropertyExtractor(formatter = @BeanPropertyFormatter(value = CapitalizationFormatter.class, args = "false"))
+@BeanPropertyExtractor(formatter = {@BeanPropertyFormatter(value = GetterFormatter.class), @BeanPropertyFormatter(value = CapitalizationFormatter.class, args = "false")})
 @VisibleForPackage
 class BeanLaneTwoAnnotationsAndDefaultBeanBehaviorTest implements BeanLaneAnnotationSpec {
     @Test

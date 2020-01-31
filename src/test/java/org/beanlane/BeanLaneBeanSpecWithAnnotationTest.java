@@ -1,12 +1,13 @@
 package org.beanlane;
 
 import org.beanlane.formatter.CaseFormatter;
+import org.beanlane.formatter.GetterFormatter;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @VisibleForPackage
-@BeanPropertyExtractor(separator = "/", formatter = @BeanPropertyFormatter(value = CaseFormatter.class, args = "LOWER"))
+@BeanPropertyExtractor(separator = "/", formatter = {@BeanPropertyFormatter(value = GetterFormatter.class), @BeanPropertyFormatter(value = CaseFormatter.class, args = "LOWER")})
 class BeanLaneBeanSpecWithAnnotationTest implements BeanLaneBeanSpec {
     @Test
     void shortNotation() {

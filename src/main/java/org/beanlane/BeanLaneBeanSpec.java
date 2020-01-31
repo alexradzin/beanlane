@@ -1,6 +1,6 @@
 package org.beanlane;
 
-import org.beanlane.extractor.BeanNameExtractor;
+import org.beanlane.extractor.PropertyNameExtractor;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -8,7 +8,7 @@ import java.util.function.Supplier;
 
 public interface BeanLaneBeanSpec {
     Map<Class, BeanLane> br = new ConcurrentHashMap<>(1);
-    BeanLane bean = new BeanLane(new BeanNameExtractor());
+    BeanLane bean = new BeanLane(new PropertyNameExtractor());
 
     default <T> T wrap(Class<T> clazz) {
         Class<?> specClass = getClass();
@@ -23,7 +23,7 @@ public interface BeanLaneBeanSpec {
                 annotation.formatter(),
                 br,
                 separator,
-                BeanNameExtractor::new).of(clazz);
+                PropertyNameExtractor::new).of(clazz);
     }
 
     default <T> String $(Supplier<T> f)  {

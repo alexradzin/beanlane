@@ -3,7 +3,7 @@ package org.beanlane;
 import net.sf.cglib.proxy.Callback;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
-import org.beanlane.extractor.BeanNameExtractor;
+import org.beanlane.extractor.PropertyNameExtractor;
 import org.beanlane.formatter.FormatterFactory;
 
 import java.lang.reflect.Constructor;
@@ -34,7 +34,7 @@ public class BeanLane {
     }
 
     public BeanLane(String separator) {
-        this(separator, new BeanNameExtractor());
+        this(separator, new PropertyNameExtractor());
     }
 
     public BeanLane(Function<Method, String> fieldNameExtractor) {

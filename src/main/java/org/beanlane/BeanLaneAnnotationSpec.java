@@ -1,7 +1,7 @@
 package org.beanlane;
 
-import org.beanlane.extractor.BeanNameAnnotationExtractor;
-import org.beanlane.extractor.BeanNameExtractor;
+import org.beanlane.extractor.PropertyNameAnnotationExtractor;
+import org.beanlane.extractor.PropertyNameExtractor;
 import org.beanlane.formatter.FormatterFactory;
 
 import java.lang.annotation.Annotation;
@@ -59,8 +59,8 @@ public interface BeanLaneAnnotationSpec {
 
             Class<? extends Annotation> aClass = a.value();
             Function<Method, String> nameExtractor = BeanPropertyExtractor.class.equals(aClass) ?
-                    new BeanNameExtractor(formatter) :
-                    new BeanNameAnnotationExtractor(aClass, a.field(), formatter);
+                    new PropertyNameExtractor(formatter) :
+                    new PropertyNameAnnotationExtractor(aClass, a.field(), formatter);
             formatterToExtractor.put(formatter, nameExtractor);
         }
 

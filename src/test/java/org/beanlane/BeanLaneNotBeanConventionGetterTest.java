@@ -1,11 +1,12 @@
 package org.beanlane;
 
 import org.beanlane.formatter.CapitalizationFormatter;
+import org.beanlane.formatter.GetterFormatter;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@BeanPropertyExtractor(formatter = @BeanPropertyFormatter(value = CapitalizationFormatter.class, args = "false"))
+@BeanPropertyExtractor(formatter = {@BeanPropertyFormatter(value = GetterFormatter.class), @BeanPropertyFormatter(value = CapitalizationFormatter.class, args = "false")})
 @VisibleForPackage
 class BeanLaneNotBeanConventionGetterTest implements BeanLaneBeanSpec {
     @Test

@@ -6,17 +6,17 @@ import java.util.function.Function;
 
 import static java.lang.String.format;
 
-public class BeanNameAnnotationExtractor implements Function<Method, String> {
+public class PropertyNameAnnotationExtractor implements Function<Method, String> {
     private final Class<? extends Annotation> annotationClass;
     private final String field;
     private final Function<String, String> formatter;
-    private final BeanNameExtractor nameExtractor = new BeanNameExtractor();
+    private final PropertyNameExtractor nameExtractor = new PropertyNameExtractor();
 
-    public BeanNameAnnotationExtractor(Class<? extends Annotation> annotationClass, String field) {
+    public PropertyNameAnnotationExtractor(Class<? extends Annotation> annotationClass, String field) {
         this(annotationClass, field, s -> s);
     }
 
-    public BeanNameAnnotationExtractor(Class<? extends Annotation> annotationClass, String field, Function<String, String> formatter) {
+    public PropertyNameAnnotationExtractor(Class<? extends Annotation> annotationClass, String field, Function<String, String> formatter) {
         this.annotationClass = annotationClass;
         this.field = field;
         this.formatter = formatter;

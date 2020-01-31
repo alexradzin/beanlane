@@ -1,13 +1,14 @@
 package org.beanlane;
 
-import org.beanlane.extractor.BeanNameExtractor;
+import org.beanlane.extractor.PropertyNameExtractor;
+import org.beanlane.formatter.GetterFormatter;
 import org.beanlane.formatter.ToSnakeCaseFormatter;
 
+import java.util.Arrays;
 import java.util.function.Supplier;
 
 public interface BeanLaneLowerSnakeSpec {
-    BeanLane snake = new BeanLane(new BeanNameExtractor(new ToSnakeCaseFormatter(false)));
-
+    BeanLane snake = new BeanLane(new PropertyNameExtractor(new ChainedFunction<>(Arrays.asList(new GetterFormatter(), new ToSnakeCaseFormatter(false)))));
 
     default <T> T wrap(Class<T> clazz) {
         return __(clazz);
