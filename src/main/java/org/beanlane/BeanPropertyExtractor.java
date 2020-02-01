@@ -13,8 +13,8 @@ import java.lang.annotation.Target;
  * Configures annotation that should be used to extract the bean property name.
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-@Repeatable(BeanPropertyExtractorConfigurations.class)
+@Target({ElementType.TYPE, ElementType.ANNOTATION_TYPE})
+@Repeatable(BeanPropertyExtractors.class)
 @Documented
 public @interface BeanPropertyExtractor {
     String separator() default DEFAULT_SEPARATOR;

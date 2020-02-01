@@ -6,10 +6,12 @@ import org.beanlane.formatter.FormatterFactory;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
@@ -27,12 +29,23 @@ public interface BeanLaneAnnotationSpec {
 
     default <T> T wrap(Class<T> clazz) {
         Class<?> specClass = getClass();
-        BeanPropertyExtractor[] annotations = specClass.getAnnotationsByType(BeanPropertyExtractor.class);
 
-        if (annotations == null || annotations.length == 0) {
+        List<BeanPropertyExtractor> extractors = new ArrayList<>();
+        for (Annotation a : specClass.getAnnotations()) {
+            if (a instanceof BeanPropertyExtractor) {
+                extractors.add((BeanPropertyExtractor)a);
+            } else if (a instanceof BeanPropertyExtractors) {
+                extractors.addAll(Arrays.asList(((BeanPropertyExtractors)a).value()));
+            } else {
+                extractors.addAll(Arrays.asList(a.annotationType().getAnnotationsByType(BeanPropertyExtractor.class)));
+            }
+        }
+
+
+        if (extractors.isEmpty()) {
             throw new IllegalArgumentException(format("Class %s is not marked with annotation %s", getClass().getName(), BeanPropertyExtractor.class.getName()));
         }
-        Collection<String> separators = Arrays.stream(annotations).map(BeanPropertyExtractor::separator).distinct().collect(Collectors.toList());
+        Collection<String> separators = extractors.stream().map(BeanPropertyExtractor::separator).distinct().collect(Collectors.toList());
         if (separators.size() > 1) {
             throw new IllegalArgumentException("All annotations must use the same separator but were different: " + separators);
         }
@@ -51,16 +64,16 @@ public interface BeanLaneAnnotationSpec {
 
 
         Map<Function<String, String>, Function<Method, String>> formatterToExtractor = new LinkedHashMap<>();
-        for (BeanPropertyExtractor a : annotations) {
+        for (BeanPropertyExtractor e : extractors) {
             Function<String, String> formatter = new ChainedFunction<>(
-                    Arrays.stream(a.formatter())
+                    Arrays.stream(e.formatter())
                             .map(conf -> FormatterFactory.create(conf.value(), paramTypes(conf), conf.args()))
                             .collect(Collectors.toList()));
 
-            Class<? extends Annotation> aClass = a.value();
+            Class<? extends Annotation> aClass = e.value();
             Function<Method, String> nameExtractor = BeanPropertyExtractor.class.equals(aClass) ?
                     new PropertyNameExtractor(formatter) :
-                    new PropertyNameAnnotationExtractor(aClass, a.field(), formatter);
+                    new PropertyNameAnnotationExtractor(aClass, e.field(), formatter);
             formatterToExtractor.put(formatter, nameExtractor);
         }
 
