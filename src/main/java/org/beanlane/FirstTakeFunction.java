@@ -3,8 +3,6 @@ package org.beanlane;
 import java.util.Collection;
 import java.util.function.Function;
 
-import static java.lang.String.format;
-
 public class FirstTakeFunction<T, R> implements Function<T, R> {
     private final Collection<Function<T, R>> functions;
 
