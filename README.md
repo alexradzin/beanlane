@@ -65,13 +65,18 @@ Once this is done 3 magic functions become available:
 *   `___()` that generates snake upper case names (e.g. `LAST_NAME`)
 
 ## How does it work
-
 The interface `BeanLaneSpec` provides several sort named default functions that delegate implementation into to
 class `BeanLane`. `BeanLane` uses CGLIB to generate proxy over provided class (`Person` in our example), so the names of called 
 methods become avaliable and can be returned to application level code. 
 
 Class `BeanLane` has several configuration parameters they can be used if you instantiate it directly without interface
 `BeanLaneSpec`. This also allows you to change names of magic function according to your taste.
+
+## Other specs
+BeanLaneLongSpec
+BeanLaneShortSpec
+BeanLaneUpperSnakeSpec
+BeanLaneAnnotationSpec (see "Extracting field names from annotations")
 
 ## Why names of magic functions do not follow naming conventions
 
@@ -80,22 +85,21 @@ The statement `$(p::getFirstName)` just a little bit longer than `"firstName"`, 
 is significantly longer and not clearer.
 
 ## Extracting field names from annotations
-
 Sometimes we want to get name of field from annotation exactly as verious ORM/OM frameworks do. BeanLane has generic container
 annotation that can be used to configure the library to use other annotation. Just make your DAO to implmenent `BeanLaneAnnotationSpec`
-and mark it with annotation `@BeanNameAnnotation`:
+and mark it with annotation `@BeanPropertyExtractor`:
 
 ```java
-@BeanNameAnnotation(value = XmlElement.class, field = "name")
-public class MyXmlDao implements BeanNameAnnotationSpec {
+@BeanPropertyExtractor(value = XmlElement.class, field = "name")
+public class MyXmlDao implements BeanLaneAnnotationSpec {
 }
 
-@BeanNameAnnotation(value = JsonProperty.class)
-public class MyJsonDao implements BeanNameAnnotationSpec {
+@BeanPropertyExtractor(value = JsonProperty.class)
+public class MyJsonDao implements BeanLaneAnnotationSpec {
 }
 ```
 
-`BeanNameAnnotationSpec` uses strings extracted from annotations instead of from class fields. For example if classPerson` is defined as following:
+`BeanLaneAnnotationSpec` uses strings extracted from annotations instead of from class fields. For example if classPerson` is defined as following:
 
 ```java
 public class Person {
@@ -118,3 +122,7 @@ class PersonDao implements BeanLaneAnnotationSpec {
     }
 }
 ```
+
+### Bean property formatters
+
+### Meta annotations
